@@ -8,7 +8,7 @@ import { styled } from "styled-components";
 const IdolCircleImg = styled.img`
   width: ${(props) => props.size || "100px"};
   height: ${(props) => props.size || "100px"};
-  padding: 3px;
+  padding: 5px;
   border: 2px solid #f96d69;
   border-radius: 50%;
   background-color: black;
