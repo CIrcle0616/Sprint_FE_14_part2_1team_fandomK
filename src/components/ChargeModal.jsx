@@ -23,8 +23,8 @@ const ChargeContent = styled.div`
     height: 20px;
   }
   div {
-    width: 36px;
-    height: 26px;
+    // width: 36px;
+    // height: 26px;
     color: ${(props) =>
       props.credit === props.selected ? "#ffffff" : "#828282"};
     font-weight: 600;
@@ -37,6 +37,7 @@ const ChargeContent = styled.div`
   }
 `;
 
+// 메인페이지의 내 크레딧 영역의 충전하기를 누르면 나오는 모달
 function ChargeModal({ isOpenP, onClose }) {
   const [seletedCredit, setSeletedCredit] = useState(100);
 
@@ -45,8 +46,6 @@ function ChargeModal({ isOpenP, onClose }) {
   const handleRadioChange = (credit) => {
     setSeletedCredit(credit);
   };
-
-  console.log(isOpenP);
 
   return (
     <Modal title="크레딧 충전하기" isOpen={isOpenP} onClose={onClose}>
