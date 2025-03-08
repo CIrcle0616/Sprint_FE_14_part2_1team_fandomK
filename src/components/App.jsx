@@ -1,4 +1,6 @@
 import IdolCircle from "./IdolCircle";
+import ChargeModal from "./ChargeModal";
+import { useState } from "react";
 
 //get http 요청으로 아이돌 불러오기
 const fetchMockIdol = async () => {
@@ -15,14 +17,27 @@ const mockIdols = await fetchMockIdol();
 // console.log(mockIdols);
 
 function App() {
+  const [open, setOpen] = useState(false);
+
+  const isOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <ul>
-      {mockIdols.map((idol) => (
-        <li>
-          <IdolCircle idol={idol} />
-        </li>
-      ))}
-    </ul>
+    <>
+      <ChargeModal isOpenP={open} onClose={handleClose} />
+      <ul>
+        {mockIdols.map((idol) => (
+          <li>
+            <IdolCircle idol={idol} />
+          </li>
+        ))}
+        <button onClick={isOpen}>투표하기</button>
+      </ul>
+    </>
   );
 }
 
