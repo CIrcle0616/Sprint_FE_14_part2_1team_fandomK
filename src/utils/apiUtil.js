@@ -55,3 +55,31 @@ export const fetchPostIdol = async () => {
     console.error("IDOL POST요청 실패", error)
   }
 };
+
+export const fetchPutIdol = async (id) => {
+  const demoIdol = {
+    "profilePicture": "https://example.com/profile.jpg",
+    "group": "뉴진스",
+    "gender": "female",
+    "name": "다니엘"
+  }
+  const url = `${BASE_URL}/idols/${id}`
+  
+  try {
+    const response = await fetch(url, {
+      method:"PUT",
+      headers: {
+        'Content-type' : "application/json"
+      },
+      body: JSON.stringify(demoIdol)
+    })
+
+    if(!response.ok) {
+      throw new Error(`HTTP 오류: ${response.status}`)
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("IDOL PUT요청 실패", error)
+  }
+};
+
