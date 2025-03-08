@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { fetchGetIdols, fetchPostIdol } from "../utils/apiUtil";
+import {
+  fetchDeleteIdol,
+  fetchGetIdols,
+  fetchPostIdol,
+  fetchPutIdol,
+} from "../utils/apiUtil";
 
 export default function ApiTest() {
   const [idols, setIdols] = useState([]);
@@ -10,6 +15,8 @@ export default function ApiTest() {
       setIdols(data);
       // const postData = await fetchPostIdol();
       // console.log(postData);
+      // const putData = await fetchPutIdol(4619);
+      // await fetchDeleteIdol(4617);
     }
     fetchData();
   }, []);
