@@ -15,7 +15,7 @@ const RadioWrapper = styled.label`
   }
 `;
 
-export default function RadioComponent({ idol }) {
+export default function RadioComponent({ idol = {} }) {
   const { id } = idol.id;
 
   return (

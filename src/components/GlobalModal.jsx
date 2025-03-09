@@ -29,7 +29,7 @@ const ModelHeader = styled.div`
   justify-content: space-between;
 `;
 
-const ModalTitel = styled.div`
+const ModalTitle = styled.div`
   color: #f7f7f8;
   font-size: 18px;
   font-weight: 500;
@@ -59,7 +59,7 @@ const Modal = ({ title, children, onClose, isOpen }) => {
     <ModalOverlay>
       <ModalContent>
         <ModelHeader>
-          <ModalTitel>{title}</ModalTitel>
+          <ModalTitle>{title}</ModalTitle>
           <ModalCloseBtn onClick={onClose} src={closeIcon} alt="닫기" />
         </ModelHeader>
         <ModalBody>{children}</ModalBody>

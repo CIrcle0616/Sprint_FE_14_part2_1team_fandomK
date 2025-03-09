@@ -9,7 +9,7 @@ const IdolHorizontalCardDiv = styled.div`
   flex-grow: 1;
   gap: 12px;
   border: none;
-  background-color: #02000e;
+  background-color: #181d26;
   & div {
     display: flex;
     align-items: center;
