@@ -4,7 +4,7 @@ import {
   fetchGetIdols,
   fetchPostIdol,
   fetchPutIdol,
-} from "../utils/apiUtil";
+} from "../utils/idolApi";
 
 export default function ApiTest() {
   const [idols, setIdols] = useState([]);
