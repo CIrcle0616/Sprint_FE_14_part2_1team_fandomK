@@ -29,13 +29,14 @@ export const fetchGetIdols = async (options = defaultGetOption) => {
   }
 };
 
-export const fetchPostIdol = async () => {
-  const demoIdol = {
-    profilePicture: "https://example.com/profile.jpg",
-    group: "뉴진스",
-    gender: "female",
-    name: "하니",
-  };
+const demoIdol = {
+  profilePicture: "https://example.com/profile.jpg",
+  group: "뉴진스",
+  gender: "female",
+  name: "하니",
+};
+
+export const fetchPostIdol = async (newIdol = demoIdol) => {
   const url = `${BASE_URL}/idols`;
 
   try {
@@ -44,7 +45,7 @@ export const fetchPostIdol = async () => {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(demoIdol),
+      body: JSON.stringify(newIdol),
     });
 
     if (!response.ok) {
