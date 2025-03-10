@@ -1,30 +1,61 @@
 import Modal from "./GlobalModal";
 import creditIcon from "../assets/icon/ic_credit.png";
 import { useNavigate } from "react-router-dom";
+import ChargeModal from "./ChargeModal";
+import { useState } from "react";
+import styled from "styled-components";
 
-function AlertModal({ isOpen }) {
-  const navigate = useNavigate();
+const CreditImg = styled.img`
+  width: 113px;
+  height: 113px;
+  margin: 0 auto;
+`;
 
-  const handleChargeClick = () => {
-    navigate("/charge"); // "/charge" 경로로 이동
+const AlertDiv = styled.div`
+  color: #ffffff;
+  font-size: 16px;
+  margin: 33px;
+
+  span {
+    color: #f96d69;
+  }
+`;
+
+function AlertModal({ isOpen, onClose }) {
+  const [openChargeModal, setOpenChargeModal] = useState(false);
+
+  const handleConfirmBtn = () => {
+    onClose();
+  };
+
+  const handleOpenChargeModal = () => {
+    onClose();
+    setOpenChargeModal(true);
   };
 
   return (
-    <Modal isOpen={isOpen}>
-      <img src={creditIcon} alt="Credit Icon" />
-      <div>충전할 크레딧 부족</div>
-      <button>확인</button>
-      <div
-        onClick={handleChargeClick}
-        style={{
-          cursor: "pointer",
-          color: "blue",
-          textDecoration: "underline",
-        }}
-      >
-        충전하러 가기
-      </div>
-    </Modal>
+    <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <CreditImg src={creditIcon} alt="Credit Icon" />
+        <AlertDiv>
+          앗! 투표하기 위한 <span>크레딧</span>이 부족해요
+        </AlertDiv>
+        <button onClick={handleConfirmBtn}>확인</button>
+        <button
+          onClick={handleOpenChargeModal}
+          style={{
+            cursor: "pointer",
+            color: "blue",
+          }}
+        >
+          충전하러 가기
+        </button>
+      </Modal>
+      <ChargeModal
+        isOpenP={openChargeModal}
+        onClose={() => setOpenChargeModal(false)}
+      />
+    </>
   );
 }
 
