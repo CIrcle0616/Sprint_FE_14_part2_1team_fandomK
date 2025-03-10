@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Modal from "./GlobalModal";
 import creditIcon from "../assets/icon/ic_credit.png";
 import checkedRadioIcon from "../assets/icon/ic_radio_checked.png";
@@ -39,19 +39,20 @@ const ChargeContent = styled.div`
 
 // 메인페이지의 내 크레딧 영역의 충전하기를 누르면 나오는 모달
 function ChargeModal({ isOpenP, onClose }) {
-  const [seletedCredit, setSeletedCredit] = useState(100);
-  const [cc, setCc] = useState(localStorage.getItem("credit"));
+  const [selectCredit, setSelectCredit] = useState(100);
+  const [chargeCredit, setChargeCredit] = useState(
+    localStorage.getItem("credit")
+  );
 
   const creditOptions = [100, 500, 1000];
 
   const handleRadioChange = (credit) => {
-    setSeletedCredit(credit);
+    setSelectCredit(credit);
   };
   const handleButtonClick = () => {
-    const result = (parseInt(cc) || 0) + seletedCredit;
+    const result = (parseInt(chargeCredit) || 0) + selectCredit;
     localStorage.setItem("credit", result.toString());
-
-    setCc(result);
+    setChargeCredit(result);
   };
 
   return (
@@ -64,13 +65,11 @@ function ChargeModal({ isOpenP, onClose }) {
             // div의 color와 chargeContent의 border를 바꾸기 위해 내려주는 props
             //   => props이름을 좀 더 고민해보자...
             credit={credit}
-            selected={seletedCredit}
+            selected={selectCredit}
           >
             <img src={creditIcon} alt="크레딧 아이콘" />
             <div>{credit}</div>
-            <img
-              src={credit === seletedCredit ? checkedRadioIcon : radioIcon}
-            />
+            <img src={credit === selectCredit ? checkedRadioIcon : radioIcon} />
           </ChargeContent>
         );
       })}
