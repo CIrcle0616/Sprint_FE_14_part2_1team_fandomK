@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import closeIcon from "../assets/icon/ic_modal_close.png";
+import { useEffect, useRef } from "react";
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -24,7 +25,7 @@ const ModalContent = styled.div`
   border-radius: 8px;
 `;
 
-const ModelHeader = styled.div`
+const ModalHeader = styled.div`
   display: flex;
   justify-content: space-between;
 `;
@@ -53,15 +54,30 @@ const ModalBody = styled.div`
 // 모달이 열려있을 때는 children을 렌더링해서 모달 내용을 보여주고,
 // x 버튼을 누르면 onClose 함수를 호출해서 모달을 닫도록 구현
 const Modal = ({ title, children, onClose, isOpen }) => {
+  const modalRef = useRef(null);
+
+  // 모달 밖의 영역을 클릭하면 모달 닫힘
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleOutsideClick = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
     <ModalOverlay>
-      <ModalContent>
-        <ModelHeader>
+      <ModalContent ref={modalRef}>
+        <ModalHeader>
           <ModalTitle>{title}</ModalTitle>
           <ModalCloseBtn onClick={onClose} src={closeIcon} alt="닫기" />
-        </ModelHeader>
+        </ModalHeader>
         <ModalBody>{children}</ModalBody>
       </ModalContent>
     </ModalOverlay>
