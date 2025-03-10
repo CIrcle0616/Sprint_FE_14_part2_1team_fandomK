@@ -40,11 +40,18 @@ const ChargeContent = styled.div`
 // 메인페이지의 내 크레딧 영역의 충전하기를 누르면 나오는 모달
 function ChargeModal({ isOpenP, onClose }) {
   const [seletedCredit, setSeletedCredit] = useState(100);
+  const [cc, setCc] = useState(localStorage.getItem("credit"));
 
   const creditOptions = [100, 500, 1000];
 
   const handleRadioChange = (credit) => {
     setSeletedCredit(credit);
+  };
+  const handleButtonClick = () => {
+    const result = (parseInt(cc) || 0) + seletedCredit;
+    localStorage.setItem("credit", result.toString());
+
+    setCc(result);
   };
 
   return (
@@ -67,6 +74,7 @@ function ChargeModal({ isOpenP, onClose }) {
           </ChargeContent>
         );
       })}
+      <button onClick={handleButtonClick}>ghkrdls</button>
     </Modal>
   );
 }
