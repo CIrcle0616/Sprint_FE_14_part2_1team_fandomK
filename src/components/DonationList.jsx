@@ -20,11 +20,11 @@ const DonationFlexList = styled.ul`
   overflow-x: auto;
   -ms-overflow-style: none; //여기부터
   scrollbar-width: none;
-  transition: margin-left 0.3s ease;
+  transition: margin-left 0.1s ease;
   ${({ isScrolled }) =>
     isScrolled &&
     `
-  margin-left: -20px;`}
+    margin-left: -20px;`}
   &::-webkit-scrollbar {
     display: none; // 여기까지 스크롤바 없애는 속성
   }
@@ -34,9 +34,13 @@ const DonationLi = styled.li`
   display: block;
 `;
 
+const RightDiv = styled.div`
+  min-width: 24px;
+`;
+
 export default function DonationList() {
   const [donations, setDonations] = useState([]);
-  const [isScrolled, setIsScrolled] = useState(false); 
+  const [isScrolled, setIsScrolled] = useState(false);
   const scrollRef = useRef(null);
 
   const handleScroll = () => {
@@ -69,6 +73,7 @@ export default function DonationList() {
             <Donation donation={donation} />
           </DonationLi>
         ))}
+        <RightDiv></RightDiv>
       </DonationFlexList>
     </DonationFlexListWrap>
   );
