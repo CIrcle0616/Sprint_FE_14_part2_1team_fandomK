@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import chartIcon from "../assets/icon/ic_chart.svg";
+import ChartTable from "./ChartTable";
+
 
 const ChartWrapper = styled.div`
   margin-top: 40px;
@@ -37,9 +39,6 @@ const ChartWrapper = styled.div`
   }
 `;
 
-
-const Chart = styled.table``;
-
 export default function IdolCharts() {
   return (
     <ChartWrapper>
@@ -50,19 +49,7 @@ export default function IdolCharts() {
           차트 투표하기
         </button>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>이달의 여자 아이돌</th>
-            <th>이달의 남자 아이돌</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
+      <ChartTable />
     </ChartWrapper>
   );
 }
