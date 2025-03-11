@@ -73,7 +73,7 @@ function ChargeModal({ isOpenP, onClose }) {
           </ChargeContent>
         );
       })}
-      <button onClick={handleButtonClick}>ghkrdls</button>
+      <button onClick={handleButtonClick}>확인</button>
     </Modal>
   );
 }

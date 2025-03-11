@@ -105,7 +105,7 @@ function DonationModal({ isOpenP, onClose }) {
               갖고 있는 크레딧보다 더 많이 후원할 수 없어요
             </DonatioVisibleDiv>
           </DonationContainer>
-          <button onClick={handleDonationButtonClick}>ghkrdls</button>
+          <button onClick={handleDonationButtonClick}>확인</button>
           {/* 가지고 있는 크레딧 보다 많은 크레딧을 입력한 경우
           버튼을 보이게하고 버튼 클릭시 ChargeModal로 이동 */}
           <ChargeVisibleButton
