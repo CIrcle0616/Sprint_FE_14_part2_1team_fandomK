@@ -1,12 +1,11 @@
-import logoImg from "../assets/images/logo.svg";
-import profileImg from "../assets/images/fandomK-img-1-김채원.png";
+import logoImg from "../../assets/images/logo.svg";
+import profileImg from "../../assets/images/fandomK-img-1-김채원.png";
 import styled from "styled-components";
-import CreditInfo from "./CreditInfo";
-import DonationList from "./DonationList";
-import IdolCharts from "./IdolCharts";
+import CreditInfo from "./components/CreditInfo";
+import DonationList from "./container/DonationList";
+import IdolCharts from "./components/IdolCharts";
 
 const Header = styled.header`
-  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
