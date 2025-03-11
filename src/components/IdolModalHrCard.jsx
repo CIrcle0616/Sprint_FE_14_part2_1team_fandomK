@@ -15,7 +15,7 @@ export default function IdolModalHrCard({ idol, flex, idx }) {
   return (
     <IdolModalHrCardDiv>
       <IdolHorizontalCard idol={idol} flex={flex} idx={idx} />
-      <RadioComponent type="radio" name="chooseOneIdol" idol={idol} />
+      {/* <RadioComponent type="radio" name="chooseOneIdol" idol={idol} /> */}
     </IdolModalHrCardDiv>
   );
 }
