@@ -2,14 +2,17 @@ import IdolCircle from "./IdolCircle";
 import IdolInfo from "./IdolInfo";
 import { styled } from "styled-components";
 
-const IdolHorizontalCardDiv = styled.div`
+export const IdolHorizontalCardDiv = styled.div`
   max-width: 100%;
   height: 70px;
   display: flex;
   flex-grow: 1;
   gap: 12px;
   border: none;
-  background-color: #181d26;
+  background-color: ${(props) => {
+    props.flex === "row" ? "transparent" : "#181d26";
+  }};
+
   & div {
     display: flex;
     align-items: center;
@@ -26,6 +29,7 @@ const IdolHorizontalCardDiv = styled.div`
 
 export default function IdolHorizontalCard({ idol, flex, idx }) {
   const rank = idx + 1;
+  console.log(flex);
   return (
     <IdolHorizontalCardDiv>
       <IdolCircle idol={idol} size={"70px"} />
