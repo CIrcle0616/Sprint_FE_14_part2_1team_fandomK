@@ -1,10 +1,5 @@
-
 export default function MainPage() {
-
   return (
-    <>
-    메인
-    </>
-
+    <>메인</>
   );
 }
