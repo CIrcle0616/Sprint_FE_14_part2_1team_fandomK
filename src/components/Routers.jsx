@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MainPage from "../pages/MainPage";
+import MainPage from "../pages/main/container/MainPage";
+import List from "../pages/list/container/idolList";
 import MyPage from "../pages/myPage/container/MyPage";
 
 export default function Routers() {
@@ -7,6 +8,7 @@ export default function Routers() {
     <Router>
       <Routes>
         <Route path="/" element={<MainPage />} />
+        <Route path="/list" element={<List />} />
         <Route path="/mypage" element={<MyPage />} />
       </Routes>
     </Router>
