@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import IdolHorizontalCard from "./IdolHorizontalCard";
+import IdolHorizontalCard from "../../../components/IdolHorizontalCard";
 import { useEffect, useState } from "react";
-import { fetchGetIdols } from "../utils/idolApi";
+import { fetchGetIdols } from "../../../utils/idolApi";
 
 const Table = styled.div`
   width: 100%;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import creditIc from "../assets/icon/ic_credit.png";
+import creditIc from "../../../assets/icon/ic_credit.png";
 import { useState } from "react";
 
 const CreditInfoWrap = styled.div`

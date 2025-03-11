@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
-import creditImg from "../assets/icon/ic_credit.png";
-import donationImgCover from "../assets/images/cover_donation.svg";
+import creditImg from "../../../assets/icon/ic_credit.png";
+import donationImgCover from "../../../assets/images/cover_donation.svg";
 
 const DonationCard = styled.div`
   max-width: 282px;

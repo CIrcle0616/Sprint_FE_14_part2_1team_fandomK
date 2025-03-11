@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainPage from "../pages/main/container/MainPage";
-import List from "../pages/list/container/idolList";
+import ListPage from "../pages/list/ListPage.jsx";
 import MyPage from "../pages/myPage/container/MyPage";
 
 export default function Routers() {
@@ -8,7 +8,7 @@ export default function Routers() {
     <Router>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/list" element={<List />} />
+        <Route path="/list" element={<ListPage />} />
         <Route path="/mypage" element={<MyPage />} />
       </Routes>
     </Router>

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import Donation from "./Donation";
-import { fetchGetDonations } from "../utils/donationApi";
+import Donation from "../components/Donation";
+import { fetchGetDonations } from "../../../utils/donationApi";
 import { styled } from "styled-components";
 
 const DonationFlexListWrap = styled.div`

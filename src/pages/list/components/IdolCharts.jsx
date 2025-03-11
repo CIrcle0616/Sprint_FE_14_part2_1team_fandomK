@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import chartIcon from "../assets/icon/ic_chart.svg";
+import chartIcon from "../../../assets/icon/ic_chart.svg";
 import ChartTable from "./ChartTable";
-
 
 const ChartWrapper = styled.div`
   margin-top: 40px;
