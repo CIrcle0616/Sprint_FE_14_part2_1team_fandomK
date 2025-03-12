@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import IdolHorizontalCard from "../../../components/IdolHorizontalCard";
 import { useEffect, useState } from "react";
-import { fetchChartDataByGender, fetchGetIdols } from "../../../utils/idolApi";
+import { fetchChartDataByGender } from "../../../utils/idolApi";
 
 const Table = styled.div`
   width: 100%;
@@ -60,14 +60,12 @@ export default function ChartTable() {
     <Table isGender={selectedGender}>
       <div className="chartHeader">
         <MenuComp
-          className="chartTab"
           active={selectedGender === "female"}
           onClick={() => handleGenderClick("female")}
         >
           이달의 여자 아이돌
         </MenuComp>
         <MenuComp
-          className="chartTab"
           active={selectedGender === "male"}
           onClick={() => handleGenderClick("male")}
         >
