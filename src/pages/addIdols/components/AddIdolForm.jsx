@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 import plusIcon from "../../../assets/icon/ic_plus.png";
 import { fetchPostImg } from "../../../utils/idolImgApi";
 import { useState } from "react";
+import { v4 as uuidV4 } from "uuid";
 import { fetchPostIdol } from "../../../utils/idolApi";
 
 const AddForm = styled.form`
@@ -44,9 +45,15 @@ export default function AddIdolForm() {
     if (!file) {
       return;
     }
-    setImg(file);
 
-    const data = await fetchPostImg(file);
+    // 파일명을 UUID로 바꿔주기 -> 한글로된 파일명이 업로드되지 않는 것 해결
+    const fileExtension = file.name.split(".").pop();
+    const fileName = `${uuidV4()}.${fileExtension}`;
+    const renamedFile = new File([file], fileName, { type: file.type });
+
+    setImg(renamedFile);
+
+    const data = await fetchPostImg(renamedFile);
     setImgUrl(data.url);
   };
 
