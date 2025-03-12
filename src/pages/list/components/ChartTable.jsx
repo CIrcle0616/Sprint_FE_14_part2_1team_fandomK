@@ -2,6 +2,7 @@ import styled from "styled-components";
 import IdolHorizontalCard from "../../../components/IdolHorizontalCard";
 import { useEffect, useState } from "react";
 import { fetchChartDataByGender } from "../../../utils/idolApi";
+import media from "../../../utils/mediaHelper";
 
 const Table = styled.div`
   width: 100%;
@@ -36,6 +37,10 @@ const OrderedList = styled.ol`
   & li:last-child {
     border: none;
   }
+  ${media.desktop`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    `}
 `;
 
 export default function ChartTable() {
