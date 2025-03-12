@@ -21,8 +21,21 @@ const ModalContent = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 8px;
-  background-color: #181d26;
+  background: #181d26;
   border-radius: 8px;
+
+  // 투표하기 모달의 모바일 환경에서 다른 디자인 적용
+  &.full-screen {
+    @media (max-width: 768px) {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      transform: none;
+      border-radius: 0;
+      justify-content:flex-start;
+      // background: linear-gradient(295deg, #181d26 80%,rgb(2, 85, 112) 100%)
+    }
 `;
 
 const ModalHeader = styled.div`
@@ -53,10 +66,10 @@ const ModalBody = styled.div`
 // 모달이 열려있는지 여부를 isOpen으로 받아서 모달을 렌더링할지 말지 결정
 // 모달이 열려있을 때는 children을 렌더링해서 모달 내용을 보여주고,
 // x 버튼을 누르면 onClose 함수를 호출해서 모달을 닫도록 구현
-const Modal = ({ title, children, onClose, isOpen }) => {
+const Modal = ({ title, children, onClose, isOpen, className }) => {
   const modalRef = useRef(null);
 
-  // 모달 밖의 영역을 클릭하면 모달 닫힘
+  // 모달이 영역 박을 클릭했을 때 모달을 닫도록 구현
   useEffect(() => {
     if (!isOpen) return;
     const handleOutsideClick = (event) => {
@@ -73,7 +86,7 @@ const Modal = ({ title, children, onClose, isOpen }) => {
 
   return (
     <ModalOverlay>
-      <ModalContent ref={modalRef}>
+      <ModalContent ref={modalRef} className={className}>
         <ModalHeader>
           <ModalTitle>{title}</ModalTitle>
           <ModalCloseBtn onClick={onClose} src={closeIcon} alt="닫기" />
