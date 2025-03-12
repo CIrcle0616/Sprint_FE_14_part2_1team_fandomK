@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 import creditImg from "../../../assets/icon/ic_credit.png";
 import donationImgCover from "../../../assets/images/cover_donation.svg";
+import media from "../../../utils/mediaHelper";
 
 const DonationCard = styled.div`
   max-width: 282px;
@@ -10,6 +11,9 @@ const DonationCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  ${media.tablet`
+    width:282px;
+    height: 402px;`}
 `;
 
 const DonationImgWrapper = styled.div`
@@ -18,11 +22,15 @@ const DonationImgWrapper = styled.div`
   height: 206px;
   border-radius: 8px;
   overflow: hidden;
+  ${media.tablet`
+    width:282px;
+    height:293px;`}
 `;
 
 const DonationImg = styled.img`
   width: 100%;
   height: 100%;
+  object-fit: cover;
 `;
 
 const CoverImg = styled.img`
@@ -35,11 +43,11 @@ const CoverImg = styled.img`
 
 const DonateBtn = styled.button`
   position: absolute;
-  left: 8px;
+  left: 50%;
   bottom: 8px;
+  transform: translate(-50%);
   z-index: 2;
   width: 142px;
-  margin: 0 auto;
   padding: 2 48px;
   border-radius: 3px;
   font-size: 13px;
@@ -48,11 +56,14 @@ const DonateBtn = styled.button`
   letter-spacing: 2%;
   background: linear-gradient(to right, #f86f65, #fe5493);
   color: #ffffff;
+  ${media.tablet`
+    width: 234px;
+    height: 40px;`}
 `;
 
 const DonationDescription = styled.div`
-  width: 158px;
-  height: 87px;
+  width: 100%;
+  height: auto;
   padding: 0 2px;
   & h3 {
     font-weight: 400;
@@ -92,7 +103,7 @@ const TextSpan = styled.span`
 
 const ProgressBar = styled.div`
   position: relative;
-  width: 154px;
+  width: 100%;
   height: 1px;
   margin-top: 7px;
   border-radius: 1px;

@@ -73,11 +73,11 @@ const ChargeLink = styled.a`
 `;
 
 export default function CreditInfo() {
-  const [credit, setCredit] = useState("36,000");
+  const [credit, setCredit] = useState();
 
   useEffect(() => {
     const localCredit = localStorage.getItem("credit");
-    setCredit(localCredit);
+    setCredit(localCredit || "36,000");
   }, []);
 
   return (
