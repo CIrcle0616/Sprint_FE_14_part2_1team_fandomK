@@ -17,6 +17,5 @@ const IdolCircleImg = styled.img`
 //size 속성을 통해 크기를 동적으로 조정할 수 있게 했습니다.
 export default function IdolCircle({ idol, size }) {
   const { profilePicture, name } = { ...idol };
-  console.log(profilePicture);
   return <IdolCircleImg src={profilePicture} alt={name} size={size} />;
 }
