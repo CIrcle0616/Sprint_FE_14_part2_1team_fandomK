@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import IdolCircle from "../../../components/IdolCircle";
 
@@ -33,8 +34,11 @@ const mockIdols = [
   ]
 
 
-export default function SelectedIdol() {
+export default function SelectedIdol(idolList) {
+  const [pickMyIdol, setPickMyIdol] = useState('');
+
   return (
+
     <>
       <PickIdolList>
         {mockIdols.map((idol) => (
@@ -44,7 +48,7 @@ export default function SelectedIdol() {
             </button>
             <ProfileInfo>
               <span>{idol.name}</span>
-              <span>{idol.name}</span>
+              <span>{idol.group}</span>
             </ProfileInfo>
           </li>
         ))}
