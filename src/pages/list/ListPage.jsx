@@ -4,15 +4,31 @@ import styled from "styled-components";
 import CreditInfo from "./components/CreditInfo";
 import DonationList from "./container/DonationList";
 import IdolCharts from "./components/IdolCharts";
+import media from "../../utils/mediaHelper";
+
+const Wrap = styled.div`
+  max-width: 1248px;
+  width: 100%;
+  margin: 0 auto;
+`;
 
 const Header = styled.header`
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
   height: 88px;
+  margin: 0 auto;
   padding-top: 44px;
   display: flex;
   align-items: center;
+  ${media.tablet`
+    height: 81px;
+    padding: 0;`}
+  ${media.desktop`
+    height: 80px;
+
+    `}
 `;
 
 const Logo = styled.a`
@@ -21,6 +37,14 @@ const Logo = styled.a`
   & img {
     width: 100%;
   }
+  ${media.tablet`
+    & img {
+    width: 120px;
+    height: auto;}`}
+  ${media.desktop`
+    & img {
+    width: auto;
+    height: 32px;}`}
 `;
 
 const Profile = styled.a`
@@ -39,7 +63,7 @@ const Profile = styled.a`
 
 export default function ListPage() {
   return (
-    <>
+    <Wrap>
       <Header>
         <Logo href="/abc">
           <img src={logoImg} />
@@ -51,6 +75,6 @@ export default function ListPage() {
       <CreditInfo />
       <DonationList />
       <IdolCharts />
-    </>
+    </Wrap>
   );
 }

@@ -1,17 +1,16 @@
 import styled from "styled-components";
 import creditIc from "../../../assets/icon/ic_credit.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import media from "../../../utils/mediaHelper";
 
-const CreditInfoWrap = styled.div`
-  max-width: 1248px;
-  width: 100%;
-  margin: 0 auto;
+const WrapCredit = styled.div`
   padding: 0 24px;
 `;
 
 const CreditInfoDiv = styled.div`
   max-width: 1200px;
   width: 100%
+  height: 100%;
   margin: 0 auto;
   margin-top: 16px;
   padding: 20px;
@@ -20,16 +19,29 @@ const CreditInfoDiv = styled.div`
   align-items:center;
   border: 1px solid #F1EEF9CC;
   border-radius: 8px;
+  ${media.tablet`
+    margin-top:0;
+    padding: 35px 64px;
+    `}
+  ${media.desktop`
+    margin-top: 50px;
+    padding: 45px 78px;`}
 `;
 
 const InnerDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  ${media.desktop`
+    gap: 16px;`}
 `;
 
 const Text = styled.p`
   color: #ffffff99;
+  ${media.tablet`
+    font-size:14px`}
+  ${media.desktop`
+      font-size: 16px;`}
 `;
 
 const Credit = styled.p`
@@ -42,6 +54,9 @@ const Credit = styled.p`
   & img {
     height: 16px;
   }
+  ${media.desktop`
+      font-size: 32px;
+  `}
 `;
 
 const ChargeLink = styled.a`
@@ -53,13 +68,20 @@ const ChargeLink = styled.a`
     cursor: pointer;
     text-decoration: none;
   }
+  ${media.desktop`
+      font-size: 24px;`}
 `;
 
 export default function CreditInfo() {
-  const [credit, setCredit] = useState("36,000");
+  const [credit, setCredit] = useState();
+
+  useEffect(() => {
+    const localCredit = localStorage.getItem("credit");
+    setCredit(localCredit || "36,000");
+  }, []);
 
   return (
-    <CreditInfoWrap>
+    <WrapCredit>
       <CreditInfoDiv>
         <InnerDiv>
           <Text>내 크레딧</Text>
@@ -70,6 +92,6 @@ export default function CreditInfo() {
         </InnerDiv>
         <ChargeLink>충전하기</ChargeLink>
       </CreditInfoDiv>
-    </CreditInfoWrap>
+    </WrapCredit>
   );
 }

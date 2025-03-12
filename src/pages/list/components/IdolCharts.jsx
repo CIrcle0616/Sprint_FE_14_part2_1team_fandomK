@@ -7,7 +7,7 @@ const ChartWrapper = styled.div`
   padding: 0 24px;
   color: #ffffff;
   & .header {
-    width: 327px;
+    width: 100%;
     height: 32px;
     display: flex;
     justify-content: space-between;

@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import IdolHorizontalCard from "../../../components/IdolHorizontalCard";
 import { useEffect, useState } from "react";
-import { fetchGetIdols } from "../../../utils/idolApi";
+import { fetchChartDataByGender } from "../../../utils/idolApi";
+import media from "../../../utils/mediaHelper";
 
 const Table = styled.div`
   width: 100%;
@@ -36,6 +37,10 @@ const OrderedList = styled.ol`
   & li:last-child {
     border: none;
   }
+  ${media.desktop`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    `}
 `;
 
 export default function ChartTable() {
@@ -47,27 +52,25 @@ export default function ChartTable() {
   };
 
   useEffect(() => {
-    const getIdolListData = async () => {
-      const { list } = await fetchGetIdols();
-      setIdols(list);
+    const getChartListData = async () => {
+      const { idols } = await fetchChartDataByGender(selectedGender, {});
+      setIdols(idols);
       return;
     };
 
-    getIdolListData();
+    getChartListData();
   }, [selectedGender]);
 
   return (
     <Table isGender={selectedGender}>
       <div className="chartHeader">
         <MenuComp
-          className="chartTab"
           active={selectedGender === "female"}
           onClick={() => handleGenderClick("female")}
         >
           이달의 여자 아이돌
         </MenuComp>
         <MenuComp
-          className="chartTab"
           active={selectedGender === "male"}
           onClick={() => handleGenderClick("male")}
         >

@@ -29,7 +29,6 @@ export const IdolHorizontalCardDiv = styled.div`
 
 export default function IdolHorizontalCard({ idol, flex, idx }) {
   const rank = idx + 1;
-  console.log(flex);
   return (
     <IdolHorizontalCardDiv>
       <IdolCircle idol={idol} size={"70px"} />
