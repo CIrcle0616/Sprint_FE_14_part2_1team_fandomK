@@ -55,29 +55,34 @@ const ChargeVisibleButton = styled.button`
 `;
 
 function DonationModal({ isOpenP, onClose }) {
-  const [inputCredit, setInputCredit] = useState(0);
-  const [showWarning, setShowWarning] = useState(false);
-  const [totalDonationCredit, setTotalDonationCredit] = useState(
+  const [inputCredit, setInputCredit] = useState(0); // 사용자가 입력한 크레딧
+  const [showWarning, setShowWarning] = useState(false); // 보유크레딧 보다 사용자가 입력한 크레딧이 많을 때
+  const [totalCredit, setTotalCredit] = useState(
     localStorage.getItem("credit")
-  );
-  const [openOtherModal, setOpenOtherModal] = useState(false);
+  ); // 보유한 총 크레딧
+  const [openOtherModal, setOpenOtherModal] = useState(false); // 충전하기 모달을 열 때
 
+  // 크레딧 입력창에 입력한 크레딧을 inputCredit에 저장
   const handleInputChange = (e) => {
     setInputCredit(Number(e.target.value));
   };
 
+  // 크레딧 입력창에서 focus가 밖으로 나갔을 때 보유 크레딧 부족 알림을 보여주기
   const handleInputBlur = () => {
-    setShowWarning(parseInt(totalDonationCredit) < inputCredit);
+    setShowWarning(parseInt(totalCredit) < inputCredit);
   };
 
+  // 후원하기 버튼을 눌렀을때
+  // 보유 크레딧에서 사용자가 입력한 크레딧을 뺀 크레딧을 localStorage에 저장
   const handleDonationButtonClick = () => {
-    if (parseInt(totalDonationCredit) > inputCredit) {
-      const result = parseInt(totalDonationCredit) - inputCredit;
+    if (parseInt(totalCredit) > inputCredit) {
+      const result = parseInt(totalCredit) - inputCredit;
       localStorage.setItem("credit", result.toString());
-      setTotalDonationCredit(result);
+      setTotalCredit(result);
     }
   };
 
+  // 충전하기 버튼을 눌렀을 때 충전하기 모달 보여주기
   const handleShowChargeModal = () => {
     setOpenOtherModal(true);
   };
@@ -94,7 +99,7 @@ function DonationModal({ isOpenP, onClose }) {
             <DonationInput
               placeholder="크레딧 입력"
               type="number"
-              totalCredit={parseInt(totalDonationCredit)}
+              totalCredit={parseInt(totalCredit)}
               inputCredit={inputCredit}
               onChange={handleInputChange}
               onBlur={handleInputBlur}
@@ -117,7 +122,6 @@ function DonationModal({ isOpenP, onClose }) {
         </Modal>
       )}
       {/* 충전하러가기 버튼을 누르면 충전하기 모달 보이기 */}
-
       <ChargeModal
         isOpenP={openOtherModal}
         onClose={() => setOpenOtherModal(false)}
