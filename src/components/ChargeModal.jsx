@@ -1,6 +1,8 @@
 import { styled } from "styled-components";
 import { useState } from "react";
+
 import Modal from "./GlobalModal";
+
 import creditIcon from "../assets/icon/ic_credit.png";
 import checkedRadioIcon from "../assets/icon/ic_radio_checked.png";
 import radioIcon from "../assets/icon/ic_radio.png";
@@ -26,7 +28,7 @@ const ChargeContent = styled.div`
     // width: 36px;
     // height: 26px;
     color: ${(props) =>
-      props.credit === props.selected ? "#ffffff" : "#828282"};
+      props.credit === props.selectedCredit ? "#ffffff" : "#828282"};
     font-weight: 600;
   }
 
@@ -39,17 +41,21 @@ const ChargeContent = styled.div`
 
 // 메인페이지의 내 크레딧 영역의 충전하기를 누르면 나오는 모달
 function ChargeModal({ isOpenP, onClose }) {
-  const [selectCredit, setSelectCredit] = useState(100);
+  const [selectCredit, setSelectCredit] = useState(100); // 사용자가 선택한 크레딧
   const [chargeCredit, setChargeCredit] = useState(
     localStorage.getItem("credit")
-  );
+  ); // 충전한 크레딧을 localStorage에서 불러오기
 
-  const creditOptions = [100, 500, 1000];
+  const creditOptions = [100, 500, 1000]; // 충전할 수 있는 크레딧을 배열에 저장 -> map으로 펼치기위해
 
+  // radio 버튼을 선택했을때 해당 credit을 파라미터로 받아 선택한크레딧을 저장
   const handleRadioChange = (credit) => {
     setSelectCredit(credit);
   };
-  const handleButtonClick = () => {
+
+  // 충전하기 버튼을 클릭했을 때
+  // 선택한 크레딧을 localStorage에 저장
+  const handleChargeButtonClick = () => {
     const result = (parseInt(chargeCredit) || 0) + selectCredit;
     localStorage.setItem("credit", result.toString());
     setChargeCredit(result);
@@ -62,10 +68,8 @@ function ChargeModal({ isOpenP, onClose }) {
           <ChargeContent
             onClick={() => handleRadioChange(credit)}
             key={credit}
-            // div의 color와 chargeContent의 border를 바꾸기 위해 내려주는 props
-            //   => props이름을 좀 더 고민해보자...
             credit={credit}
-            selected={selectCredit}
+            selectedCredit={selectCredit}
           >
             <img src={creditIcon} alt="크레딧 아이콘" />
             <div>{credit}</div>
@@ -73,7 +77,7 @@ function ChargeModal({ isOpenP, onClose }) {
           </ChargeContent>
         );
       })}
-      <button onClick={handleButtonClick}>확인</button>
+      <button onClick={handleChargeButtonClick}>확인</button>
     </Modal>
   );
 }
