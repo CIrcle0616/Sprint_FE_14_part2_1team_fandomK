@@ -97,3 +97,24 @@ export const fetchDeleteIdol = async (id) => {
     console.error("IDOL 삭제 요청 실패", error);
   }
 };
+
+export const fetchChartDataByGender = async (gender, option) => {
+  const { cursor, pageSize } = option;
+  const params = new URLSearchParams();
+
+  if (cursor) params.append("cursor", cursor);
+  if (pageSize) params.append("pageSize", pageSize);
+
+  const queryString = params.toString();
+  const url = `${BASE_URL}/charts/{gender}?gender=${gender}&${
+    queryString ? `${queryString}` : ""
+  }`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP 오류: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error("차트 불러오기 실패", error);
+  }
+};

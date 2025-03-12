@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import IdolHorizontalCard from "../../../components/IdolHorizontalCard";
 import { useEffect, useState } from "react";
-import { fetchGetIdols } from "../../../utils/idolApi";
+import { fetchChartDataByGender, fetchGetIdols } from "../../../utils/idolApi";
 
 const Table = styled.div`
   width: 100%;
@@ -47,13 +47,13 @@ export default function ChartTable() {
   };
 
   useEffect(() => {
-    const getIdolListData = async () => {
-      const { list } = await fetchGetIdols();
-      setIdols(list);
+    const getChartListData = async () => {
+      const { idols } = await fetchChartDataByGender(selectedGender, {});
+      setIdols(idols);
       return;
     };
 
-    getIdolListData();
+    getChartListData();
   }, [selectedGender]);
 
   return (
