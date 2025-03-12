@@ -1,50 +1,101 @@
-import { styled } from "styled-components";
-import plusIcon from "../../../assets/icon/ic_plus.png";
-import { fetchPostImg } from "../../../utils/idolImgApi";
-import { useEffect, useState } from "react";
+import { styled, ThemeProvider } from "styled-components";
+import { useState } from "react";
 import { v4 as uuidV4 } from "uuid";
+
 import theme from "../../../styles/theme";
+import { fetchPostImg } from "../../../utils/idolImgApi";
 import { fetchPostIdol } from "../../../utils/idolApi";
 import AddIdolConfirmModal from "./AddIdolConfirmModal";
 
+import plusIcon from "../../../assets/icon/ic_plus.png";
+
 const AddForm = styled.form`
-  width: 100%;
-  margin : 30px; auto;
+  width: 327px;
+  margin: 120px auto;
 
   div {
     color: ${({ theme }) => theme.colors.whiteColor};
     font-size: ${({ theme }) => theme.fontSize.medium};
     font-weight: 500;
   }
+`;
+
+const FormImg = styled.img`
+  width: 115px;
+  height: 115px;
+  background-color: ${({ theme }) => theme.colors.grayColor4};
+  opacity: 0.7;
+  border-radius: 50%;
+`;
+
+const FormButton = styled.button`
+  width: 295px;
+  height: 42px;
+  border-radius: 3px;
+  margin: 50px 0;
+  color: ${({ theme }) => theme.colors.whiteColor};
+  font-size: ${({ theme }) => theme.fontSize.small};
+  font-weight: 600;
+  background: linear-gradient(
+    to left,
+    ${({ theme }) => theme.colors.brandColor2} 0%,
+    ${({ theme }) => theme.colors.brandColor1} 100%
+  );
+`;
+
+const InputIdolInfo = styled.input`
+  width: 295px;
+  height: 58px;
+  border-radius: 8px;
+  background-color: #272f3d;
+  font-size: ${({ theme }) => theme.fontSize.small};
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.whiteColor};
+  padding: 16px;
+  margin: 24px 0;
+`;
+
+const DisableInputEmpty = styled.div`
+  display: ${(props) => (props.disabled ? "block" : "none")};
+`;
+
+const ImgContainer = styled.div`
+  width: 128px;
+  height: 128px;
+  border: solid 1px ${({ theme }) => theme.colors.brandColor1};
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 24px 0;
+`;
+
+const Require = styled.span`
+  color: ${({ theme }) => theme.colors.brandColor2};
+`;
+
+const RadioSection = styled.div`
+  margin: 24px 0;
 
   input {
-    width: 300px;
-    margin:10px 0;
-    border-radius:5px;
+    margin-right: 10px;
   }
 
-  img {
-  width:48px;
-  height:48px;
-    background-color:${({ theme }) => theme.colors.grayColor4};
-    opacity:0.7;
-    border-radius:50%;
+  label {
+    font-size: ${({ theme }) => theme.fontSize.small};
+    margin-right: 50px;
   }
-    label{
-        color:${({ theme }) => theme.colors.whiteColor};
-    }
 `;
 
 export default function AddIdolForm() {
-  const [img, setImg] = useState(null);
-  const [imgUrl, setImgUrl] = useState("");
-  const [inputNameValue, setInputNameValue] = useState("");
-  const [inputGroupValue, setInputGroupValue] = useState("");
-  const [gender, setGender] = useState("");
-  const [conFirmModalOpen, setConfirmModalOpen] = useState(false);
-  const handleAddIdolClose = () => {
-    setConfirmModalOpen(false);
-  };
+  const [img, setImg] = useState(null); // 대표사진
+  const [imgUrl, setImgUrl] = useState(""); // 대표사진 URL
+  const [inputNameValue, setInputNameValue] = useState(""); // 인풋에 입력한 아이돌 이름
+  const [inputGroupValue, setInputGroupValue] = useState(""); // 인풋에 입력한 그룹 이름
+  const [gender, setGender] = useState(""); // 성별별
+  const [conFirmModalOpen, setConfirmModalOpen] = useState(false); // 확인 모달
+  const [isNameEmpty, setIsNameEmpty] = useState(false); // 인풋에 이름이 비어있는지 여부
+  const [isGroupEmpty, setIsGroupEmpty] = useState(false); // 인풋에 그룹이 비어있는지 여부
 
   // 대표사진 업로드
   const handleFileChange = async (event) => {
@@ -64,19 +115,18 @@ export default function AddIdolForm() {
     setImgUrl(data.url);
   };
 
-  // 아이돌 정보 POST
+  // 아이돌 정보 POST -> 확인 모달에서 작동
   const handleAddIdol = async (e) => {
     e.preventDefault();
-
     const newIdol = {
       name: inputNameValue,
       group: inputGroupValue,
       profilePicture: imgUrl ? imgUrl : "https://example.com/profile.jpg",
       gender: gender,
     };
-
     await fetchPostIdol(newIdol);
 
+    // 입력한 아이돌 정보 초기화
     setInputNameValue("");
     setInputGroupValue("");
     setImg(null);
@@ -90,13 +140,38 @@ export default function AddIdolForm() {
     setConfirmModalOpen(true);
   };
 
+  // 이름 입력 인풋에서 focus가 나갔을 때 비어있으면 경고 div 출력
+  const handleIsNameEmpty = (event) => {
+    if (!event.target.value) {
+      setIsNameEmpty(true);
+    } else {
+      setIsNameEmpty(false);
+    }
+  };
+
+  // 그룹 입력 인풋에서 focus가 나갔을 때 비어있으면 경고 div 출력
+  const handleIsGroupEmpty = (event) => {
+    if (!event.target.value) {
+      setIsGroupEmpty(true);
+    } else {
+      setIsGroupEmpty(false);
+    }
+  };
+
+  // x 버튼 누르면 모달 닫힘
+  const handleAddIdolClose = () => {
+    setConfirmModalOpen(false);
+  };
+
+  // 확인 버튼을 누르면 '필수 입력항목입니다' 뜨게 구현...
+
   return (
-    <>
-      <AddForm theme={theme}>
+    <ThemeProvider theme={theme}>
+      <AddForm>
         <div>아이돌 대표 이미지</div>
-        <div>
+        <ImgContainer>
           <label htmlFor="idolImg">
-            <img src={imgUrl || plusIcon}></img>
+            <FormImg src={imgUrl || plusIcon}></FormImg>
           </label>
           <input
             id="idolImg"
@@ -105,46 +180,74 @@ export default function AddIdolForm() {
             onChange={handleFileChange}
             style={{ display: "none" }}
           />
-        </div>
+        </ImgContainer>
 
-        <div>아이돌 이름</div>
-        <input
+        <div>
+          아이돌 이름 <Require>*</Require>
+        </div>
+        <InputIdolInfo
           name="name"
           value={inputNameValue}
           onChange={(e) => setInputNameValue(e.target.value)}
-        ></input>
-        <div>그룹명</div>
-        <input
+          onBlur={handleIsNameEmpty}
+          placeholder="이름을 입력해주세요"
+        />
+        <DisableInputEmpty disabled={isNameEmpty}>
+          필수 입력 항목입니다.
+        </DisableInputEmpty>
+        <div>
+          그룹명 <Require>*</Require>
+        </div>
+        <InputIdolInfo
           name="group"
           value={inputGroupValue}
           onChange={(e) => setInputGroupValue(e.target.value)}
+          onBlur={handleIsGroupEmpty}
+          placeholder="그룹을 입력해주세요"
         />
+        <DisableInputEmpty disabled={isGroupEmpty}>
+          필수 입력 항목입니다.
+        </DisableInputEmpty>
         <div>성별</div>
-        <input
-          id="female"
-          type="radio"
-          value="female"
-          name="gender"
-          onChange={(e) => setGender(e.target.value)}
-        />
-        <label htmlFor="female">여성</label>
-        <input
-          id="male"
-          type="radio"
-          value="male"
-          name="gender"
-          onChange={(e) => setGender(e.target.value)}
-        />
-        <label htmlFor="male">남성</label>
-        <button type="button" onClick={handleShowModal}>
+        <RadioSection>
+          <input
+            id="female"
+            type="radio"
+            value="female"
+            name="gender"
+            onChange={(e) => setGender(e.target.value)}
+          />
+          <label htmlFor="female">여성</label>
+          <input
+            id="male"
+            type="radio"
+            value="male"
+            name="gender"
+            onChange={(e) => setGender(e.target.value)}
+          />
+          <label htmlFor="male">남성</label>
+        </RadioSection>
+        <FormButton
+          disabled={
+            isNameEmpty ||
+            isGroupEmpty ||
+            !Boolean(inputNameValue) ||
+            !Boolean(inputGroupValue)
+          }
+          type="button"
+          onClick={handleShowModal}
+        >
           확인
-        </button>
+        </FormButton>
         <AddIdolConfirmModal
           isOpenP={conFirmModalOpen}
           onClose={handleAddIdolClose}
+          img={imgUrl}
+          name={inputNameValue}
+          group={inputGroupValue}
           onSubmit={handleAddIdol}
         />
       </AddForm>
-    </>
+    </ThemeProvider>
   );
 }
