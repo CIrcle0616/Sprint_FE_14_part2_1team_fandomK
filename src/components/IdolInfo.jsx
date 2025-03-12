@@ -35,10 +35,12 @@ const IdolInfoDiv = styled.div`
 `;
 
 export default function IdolInfo({ idol, flex }) {
-  const { name, totalVotes } = { ...idol };
+  const { name, totalVotes, group } = { ...idol };
   return (
     <IdolInfoDiv flex={flex}>
-      <div className="bold">{name}</div>
+      <div className="bold">
+        {group} {name}
+      </div>
       <div className="light">{totalVotes + "표"}</div>
     </IdolInfoDiv>
   );
