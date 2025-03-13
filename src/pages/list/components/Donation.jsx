@@ -117,7 +117,7 @@ const ProgressBar = styled.div`
     background-color: #F96D69;
 `;
 
-export default function Donation({ donation,openDonationModal }) {
+export default function Donation({ donation, openDonationModal }) {
   const { idolId, title, subtitle, targetDonation, receiveDonations, idol } =
     donation;
 
@@ -125,7 +125,10 @@ export default function Donation({ donation,openDonationModal }) {
     <DonationCard>
       <DonationImgWrapper>
         <DonationImg src={idol.profilePicture} alt="민지" />
-        <DonateBtn onClick={openDonationModal}>후원하기</DonateBtn>
+        {/* donation props를 인자로 전달하여 모달 열기 */}
+        <DonateBtn onClick={() => openDonationModal(donation)}>
+          후원하기
+        </DonateBtn>
         <CoverImg src={donationImgCover} />
       </DonationImgWrapper>
       <DonationDescription>
