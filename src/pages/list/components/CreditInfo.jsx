@@ -3,6 +3,7 @@ import creditIc from "../../../assets/icon/ic_credit.png";
 import { useEffect, useState } from "react";
 import media from "../../../utils/mediaHelper";
 import ChargeModal from "../../../components/ChargeModal";
+import useCredit from "../../../utils/useCredit";
 
 const WrapCredit = styled.div`
   padding: 0 24px;
@@ -74,11 +75,12 @@ const ChargeLink = styled.a`
 `;
 
 export default function CreditInfo({ openChargeModal }) {
-  const [credit, setCredit] = useState();
+  const [credit, setCredit] = useCredit();
 
   useEffect(() => {
-    const localCredit = localStorage.getItem("credit");
-    setCredit(localCredit || "36,000");
+    // const localCredit = localStorage.getItem("credit");
+    // setCredit(localCredit || "36,000");
+    setCredit(credit || 0);
   }, []);
 
   return (
