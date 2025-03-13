@@ -59,6 +59,7 @@ const ModalBody = styled.div`
   display: flex;
   flex-direction: column;
   justify-contents: center;
+  align-items: center;
   gap: 8px;
   margin-top: 24px;
 `;
