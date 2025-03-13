@@ -11,10 +11,8 @@ const ChargeContent = styled.div`
   width: 295px;
   height: 62px;
   background-color: #02000e;
-  border: ${(props) =>
-    props.credit === props.selected
-      ? "solid 1px #f96d69"
-      : "solid 1px #f7f7f8"};
+  border: ${($credit, $selectedCredit) =>
+    $credit === $selectedCredit ? "solid 1px #f96d69" : "solid 1px #f7f7f8"};
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -27,8 +25,8 @@ const ChargeContent = styled.div`
   div {
     // width: 36px;
     // height: 26px;
-    color: ${(props) =>
-      props.credit === props.selectedCredit ? "#ffffff" : "#828282"};
+    color: ${($credit, $selectedCredit) =>
+      $credit === $selectedCredit ? "#ffffff" : "#828282"};
     font-weight: 600;
   }
 
@@ -68,8 +66,8 @@ function ChargeModal({ isOpenP, onClose }) {
           <ChargeContent
             onClick={() => handleRadioChange(credit)}
             key={credit}
-            credit={credit}
-            selectedCredit={selectCredit}
+            $credit={credit}
+            $selectedCredit={selectCredit}
           >
             <img src={creditIcon} alt="크레딧 아이콘" />
             <div>{credit}</div>

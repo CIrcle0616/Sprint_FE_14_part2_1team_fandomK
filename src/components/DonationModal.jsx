@@ -18,10 +18,8 @@ const DonationInput = styled.input`
   color: #ffffff;
   padding: 16px;
 
-  border: ${(props) =>
-    props.totalCredit < props.inputCredit
-      ? "solid 1px #ff3b3b"
-      : "solid 1px #ffffff"};
+  border: ${($totalCredit, $inputCredit) =>
+    $totalCredit < $inputCredit ? "solid 1px #ff3b3b" : "solid 1px #ffffff"};
 
   placeholder {
     color: #67666e;
@@ -43,7 +41,7 @@ const DonationImg = styled.img`
 `;
 
 const DonatioVisibleDiv = styled.div`
-  display: ${(props) => (props.showWarning ? "block" : "none")};
+  display: ${({ $showWarning }) => ($showWarning ? "block" : "none")};
   height: 14px;
   font-size: 12px;
   color: #ff2626;
@@ -51,7 +49,7 @@ const DonatioVisibleDiv = styled.div`
 `;
 
 const ChargeVisibleButton = styled.button`
-  display: ${(props) => (props.showWarning ? "block" : "none")};
+  display: ${({ $showWarning }) => ($showWarning ? "block" : "none")};
 `;
 
 function DonationModal({ isOpenP, onClose }) {
@@ -99,14 +97,14 @@ function DonationModal({ isOpenP, onClose }) {
             <DonationInput
               placeholder="크레딧 입력"
               type="number"
-              totalCredit={parseInt(totalCredit)}
-              inputCredit={inputCredit}
+              $totalCredit={parseInt(totalCredit)}
+              $inputCredit={inputCredit}
               onChange={handleInputChange}
               onBlur={handleInputBlur}
             />
             <DonationImg src={creditIcon} />
             {/* 가지고 있는 크레딧 보다 많은 크레딧을 입력한 경우*/}
-            <DonatioVisibleDiv showWarning={showWarning}>
+            <DonatioVisibleDiv $showWarning={showWarning}>
               갖고 있는 크레딧보다 더 많이 후원할 수 없어요
             </DonatioVisibleDiv>
           </DonationContainer>
@@ -115,7 +113,7 @@ function DonationModal({ isOpenP, onClose }) {
           버튼을 보이게하고 버튼 클릭시 ChargeModal로 이동 */}
           <ChargeVisibleButton
             onClick={handleShowChargeModal}
-            showWarning={showWarning}
+            $showWarning={showWarning}
           >
             충전하러 가기
           </ChargeVisibleButton>
