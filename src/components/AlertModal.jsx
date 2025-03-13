@@ -1,9 +1,10 @@
 import Modal from "./GlobalModal";
-import creditIcon from "../assets/icon/ic_credit.png";
+import creditIcon from "../assets/icon/ic_credit.svg";
 import { useNavigate } from "react-router-dom";
 import ChargeModal from "./ChargeModal";
 import { useState } from "react";
 import styled from "styled-components";
+import ModalButton from "./ModalButton";
 
 const CreditImg = styled.img`
   width: 113px;
@@ -40,16 +41,8 @@ function AlertModal({ isOpen, onClose }) {
         <AlertDiv>
           앗! 투표하기 위한 <span>크레딧</span>이 부족해요
         </AlertDiv>
-        <button onClick={handleConfirmBtn}>확인</button>
-        <button
-          onClick={handleOpenChargeModal}
-          style={{
-            cursor: "pointer",
-            color: "blue",
-          }}
-        >
-          충전하러 가기
-        </button>
+        <ModalButton onClick={handleConfirmBtn}>확인</ModalButton>
+        <ModalButton onClick={handleOpenChargeModal}>충전하러 가기</ModalButton>
       </Modal>
       <ChargeModal
         isOpenP={openChargeModal}

@@ -2,11 +2,12 @@ import { styled } from "styled-components";
 import { useEffect, useState } from "react";
 
 import Modal from "./GlobalModal";
+import ModalButton from "./ModalButton";
 
-import creditIcon from "../assets/icon/ic_credit.png";
+import creditIcon from "../assets/icon/ic_credit.svg";
 import checkedRadioIcon from "../assets/icon/ic_radio_checked.png";
 import radioIcon from "../assets/icon/ic_radio.png";
-import useCredit from "../utils/useCredit";
+import useCredit from "../hooks/useCredit";
 
 const ChargeContent = styled.div`
   width: 295px;
@@ -74,7 +75,10 @@ function ChargeModal({ isOpenP, onClose }) {
           </ChargeContent>
         );
       })}
-      <button onClick={handleChargeButtonClick}>확인</button>
+      <ModalButton onClick={handleChargeButtonClick}>
+        <img src={creditIcon}></img>
+        충전하기
+      </ModalButton>
     </Modal>
   );
 }
