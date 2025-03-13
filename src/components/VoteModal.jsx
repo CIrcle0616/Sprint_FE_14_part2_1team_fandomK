@@ -8,7 +8,8 @@ import { fetchGetIdols } from "../utils/idolApi";
 
 import checkedRadioIcon from "../assets/icon/ic_radio_checked.png";
 import radioIcon from "../assets/icon/ic_radio.png";
-import useCredit from "../utils/useCredit";
+import useCredit from "../hooks/useCredit";
+import { Button } from "./ModalButton";
 
 const VoteDiv = styled.div`
   background: #181d26;
@@ -53,10 +54,15 @@ const VoteDisDiv = styled.div`
   color: #ffffff;
   font-size: 12px;
   text-align: center;
+  margin-top: 12px;
 
   span {
     color: #f96d69;
   }
+`;
+
+const ModalVoteButton = styled(Button)`
+  width: 477px;
 `;
 
 const VoteModal = ({ isOpenP, onClose }) => {
@@ -99,15 +105,12 @@ const VoteModal = ({ isOpenP, onClose }) => {
     return () => window.removeEventListener("resize", innerSize);
   }, []);
 
-  // 스크롤 이벤트 처리 (데스크톱 전용)
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     if (scrollHeight - scrollTop <= clientHeight * 1.5 && cursor) {
       fetchIdolList();
     }
   };
-
-  // 모달 열릴 때 상위 페이지 스크롤 방지
 
   return (
     <>
@@ -131,10 +134,10 @@ const VoteModal = ({ isOpenP, onClose }) => {
               </React.Fragment>
             ))}
           </VoteDiv>
+          <ModalVoteButton onClick={handleVoteButton}>투표하기</ModalVoteButton>
           <VoteDisDiv>
             투표하는데 <span>1000 크레딧</span>이 소모됩니다.
           </VoteDisDiv>
-          <button onClick={handleVoteButton}>투표하기</button>
         </Modal>
       )}
       <AlertModal isOpen={alert} onClose={() => setAlert(false)} />
