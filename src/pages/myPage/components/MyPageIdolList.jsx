@@ -2,79 +2,89 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import IdolCircle from "../../../components/IdolCircle";
 
+//아이돌 리스트
 const TotalIdolList = styled.ul`
   margin-bottom:48px;
   display:flex; gap:32px 22px;
 `
 
-const ProfileInfo = styled.div`
-  display:flex; flex-direction:column; color:#fff; font-size:16px; line-height:26px; text-align:center;
-`
-const AddButton = styled.button`
-  display:block; margin:0 auto;
-  width:255px; height:48px; background: linear-gradient(91.18deg, #F77063 3.33%, #FE5790 99.37%);
-  color:#fff; font-size:16px; line-height:26px;font-weight:bold; text-align:center; border-radius:48px;
-`
+const IdolItem = styled.li`
+  margin-bottom: 10px;
 
-
-export default function SelectedIdol(idolList) {
-  const [myPickedIdolList, setMyPickedIdolList] = useState([]);
-  const [isActive, setIsActive] = useState({});
-
-  function buttonCheckClick(e) {
-    if (!e.currentTarget) return;
-
-    const idolId = e.currentTarget.dataset.id;
-
-    if (!idolId) return;
-
-    // setIsActive((prev) => !prev); 하나의 상태로 관리할 수 없음
-    // const [localState, setLocalState] = useState({
-    //   myPickedIdolList : [],
-    //   isActive : 'off'
-    // });
-
-    setIsActive( (prev) => ({
-      ...prev,
-      [idolId]: !prev[idolId]
-    }));
-    //setMyPickedIdolList((prev) => [...prev, idolId]);
-    setMyPickedIdolList((prev) =>
-      prev.includes(idolId) ? prev.filter((id) => id !== idolId) : [...prev, idolId]
-    );
-    console.log(isActive)
-
-    // function buttonCheckClick (e) {
-    //   if(isActive == "off") isActive = "on"
-    //   else isActive = "off"
-
-    //   let tempArr = localState.myPickedIdolList
-    //   tempArr.push(e.currentTarget.dataset.id )
-    //   setLocalState({...localState, myPickedIdolList:tempArr})
-
+  button {
+    position:relative;
+    overflow:hidden;
+    border:1px solid #F77063;
+    border-radius:50%;
   }
-  useEffect(() => {
-    console.log("Updated isActive:", isActive);// useEffect로
-  }, [isActive]);
+  img {
+  border:none;
+    &:hover {
+      transform:scale(1.2);
+      transition:all 0.4s;
+
+    }
+  }
+`;
+
+// 아이돌 아이템 영역 체크 표시
+const Layer = styled.div`
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:10;
+  width: 100%;
+  height: 100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border-radius:50%;
+  background: linear-gradient(271.36deg, rgba(249, 110, 104, 0.5) -9.84%, rgba(254, 87, 143, 0.5) 107.18%);
+
+  img {
+    width:52px;
+    height:52px;
+  }
+`;
 
 
+//아이돌 정보
+const ProfileInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  font-size: 16px;
+  line-height: 26px;
+  text-align: center;
+`;
+
+
+
+export default function SelectedIdol({ idols = [], activeState, checkedIdols, toggleIdolSelection }) {
 
   return (
     <div>
       <TotalIdolList>
-        {idolList.props.map((idol) => (
-          <li key={idol.id}>
-            <button type="button" onClick={buttonCheckClick} data-id={idol.id} data-active={isActive[idol.id]? true : false}>
+        {idols.map((idol) => (
+          <IdolItem
+            key={idol.id}
+            isActive={checkedIdols.includes(idol.id)}
+          >
+              <button
+                type="button"
+                data-id={idol.id}
+                onClick={() => toggleIdolSelection(idol.id)}
+              >
               <IdolCircle idol={idol} />
+              {checkedIdols.includes(idol.id) ? <Layer><img src="/src/assets/images/img_checkmark.png"/></Layer> : ''}
             </button>
             <ProfileInfo>
               <span>{idol.name}</span>
               <span>{idol.group}</span>
             </ProfileInfo>
-          </li>
+          </IdolItem>
         ))}
       </TotalIdolList>
-      <AddButton type="button"><span>추가하기</span></AddButton>
     </div>
   );
 }
