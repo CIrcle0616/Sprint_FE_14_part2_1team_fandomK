@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useOpen from "../../hooks/useOpen";
 import logoImg from "../../assets/images/logo.svg";
 import profileImg from "../../assets/images/fandomK-img-1-김채원.png";
 import styled from "styled-components";
@@ -67,42 +68,11 @@ const Profile = styled.a`
 `;
 
 export default function ListPage() {
-  const [isChargeModalOpen, setIsChargeModalOpen] = useState(false);
-  const [isVoteModalOpen, setIsVoteModalOpen] = useState(false);
-  const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
-  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
-
-  const openChargeModal = () => {
-    setIsChargeModalOpen(true);
-  };
-
-  const closeChargeModal = () => {
-    setIsChargeModalOpen(false);
-  };
-
-  const openVoteModal = () => {
-    setIsVoteModalOpen(true);
-  };
-
-  const closeVoteModal = () => {
-    setIsVoteModalOpen(false);
-  };
-
-  const openDonationModal = () => {
-    setIsDonationModalOpen(true);
-  };
-
-  const closeDonationModal = () => {
-    setIsDonationModalOpen(false);
-  };
-
-  const openAlertModal = () => {
-    setIsAlertModalOpen(true);
-  };
-
-  const closeAlertModal = () => {
-    setIsAlertModalOpen(false);
-  };
+  const [isChargeModalOpen, openChargeModal, closeChargeModal] = useOpen();
+  const [isVoteModalOpen, openVoteModal, closeVoteModal] = useOpen();
+  const [isDonationModalOpen, openDonationModal, closeDonationModal] =
+    useOpen();
+  const [isAlertModalOpen, openAlertModal, closeAlertModal] = useOpen();
 
   return (
     <>
@@ -124,8 +94,8 @@ export default function ListPage() {
           </Profile>
         </Header>
         <CreditInfo openChargeModal={openChargeModal} />
-        <DonationList openDonationModal={openDonationModal}/>
-        <IdolCharts openVoteModal={openVoteModal}/>
+        <DonationList openDonationModal={openDonationModal} />
+        <IdolCharts openVoteModal={openVoteModal} />
       </Wrap>
     </>
   );
