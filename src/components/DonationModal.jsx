@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import Modal from "./GlobalModal";
 import creditIcon from "../assets/icon/ic_credit.png";
 import ChargeModal from "./ChargeModal";
-import useCredit from "../utils/useCredit";
+import useCredit from "../hooks/useCredit";
+import Donation from "../pages/list/components/Donation";
 
 const DonationContainer = styled.div`
   position: relative;
@@ -53,11 +54,14 @@ const ChargeVisibleButton = styled.button`
   display: ${({ $showWarning }) => ($showWarning ? "block" : "none")};
 `;
 
-function DonationModal({ isOpenP, onClose }) {
+function DonationModal({ isOpenP, onClose, donation }) {
   const [inputCredit, setInputCredit] = useState(0); // 사용자가 입력한 크레딧
   const [showWarning, setShowWarning] = useState(false); // 보유크레딧 보다 사용자가 입력한 크레딧이 많을 때
   const [totalCredit, setTotalCredit] = useCredit(); // 보유한 총 크레딧
   const [openOtherModal, setOpenOtherModal] = useState(false); // 충전하기 모달을 열 때
+
+  // donation 구조분해 할당
+  const { idol = {}, title = "", subtitle = "" } = donation || {};
 
   // 크레딧 입력창에 입력한 크레딧을 inputCredit에 저장
   const handleInputChange = (e) => {
@@ -92,9 +96,10 @@ function DonationModal({ isOpenP, onClose }) {
     <>
       {!openOtherModal && (
         <Modal title="후원하기" isOpen={isOpenP} onClose={onClose}>
-          <div style={{ color: "#ffffff" }}>
-            이 곳은 후원을 기다리는 조공 <br />
-            카드를 선택하면 나오는 컴포넌트입니다.
+          <div>
+            <img src={idol.profilePicture}></img>
+            <div>{title}</div>
+            <div>{subtitle}</div>
           </div>
           <DonationContainer>
             <DonationInput

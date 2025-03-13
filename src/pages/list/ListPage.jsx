@@ -73,6 +73,12 @@ export default function ListPage() {
   const [isDonationModalOpen, openDonationModal, closeDonationModal] =
     useOpen();
   const [isAlertModalOpen, openAlertModal, closeAlertModal] = useOpen();
+  const [selectedDonation, setSelectedDonation] = useState(null);
+
+  const handleOpenDonationModal = (donation) => {
+    setSelectedDonation(donation);
+    openDonationModal();
+  };
 
   return (
     <>
@@ -82,6 +88,7 @@ export default function ListPage() {
       <DonationModal
         isOpenP={isDonationModalOpen}
         onClose={closeDonationModal}
+        donation={selectedDonation}
       />
       <AlertModal isOpen={isAlertModalOpen} onClose={closeAlertModal} />
       <Wrap>
@@ -94,7 +101,7 @@ export default function ListPage() {
           </Profile>
         </Header>
         <CreditInfo openChargeModal={openChargeModal} />
-        <DonationList openDonationModal={openDonationModal} />
+        <DonationList openDonationModal={handleOpenDonationModal} />
         <IdolCharts openVoteModal={openVoteModal} />
       </Wrap>
     </>
