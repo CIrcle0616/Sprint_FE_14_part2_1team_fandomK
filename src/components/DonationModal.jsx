@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Modal from "./GlobalModal";
 import creditIcon from "../assets/icon/ic_credit.png";
 import ChargeModal from "./ChargeModal";
+import useCredit from "../utils/useCredit";
 
 const DonationContainer = styled.div`
   position: relative;
@@ -18,7 +19,7 @@ const DonationInput = styled.input`
   color: #ffffff;
   padding: 16px;
 
-  border: ${($totalCredit, $inputCredit) =>
+  border: ${({ $totalCredit, $inputCredit }) =>
     $totalCredit < $inputCredit ? "solid 1px #ff3b3b" : "solid 1px #ffffff"};
 
   placeholder {
@@ -55,9 +56,7 @@ const ChargeVisibleButton = styled.button`
 function DonationModal({ isOpenP, onClose }) {
   const [inputCredit, setInputCredit] = useState(0); // 사용자가 입력한 크레딧
   const [showWarning, setShowWarning] = useState(false); // 보유크레딧 보다 사용자가 입력한 크레딧이 많을 때
-  const [totalCredit, setTotalCredit] = useState(
-    localStorage.getItem("credit")
-  ); // 보유한 총 크레딧
+  const [totalCredit, setTotalCredit] = useCredit(); // 보유한 총 크레딧
   const [openOtherModal, setOpenOtherModal] = useState(false); // 충전하기 모달을 열 때
 
   // 크레딧 입력창에 입력한 크레딧을 inputCredit에 저장
@@ -73,10 +72,8 @@ function DonationModal({ isOpenP, onClose }) {
   // 후원하기 버튼을 눌렀을때
   // 보유 크레딧에서 사용자가 입력한 크레딧을 뺀 크레딧을 localStorage에 저장
   const handleDonationButtonClick = () => {
-    if (parseInt(totalCredit) > inputCredit) {
-      const result = parseInt(totalCredit) - inputCredit;
-      localStorage.setItem("credit", result.toString());
-      setTotalCredit(result);
+    if (totalCredit > inputCredit) {
+      setTotalCredit(totalCredit - inputCredit);
     }
   };
 
@@ -84,6 +81,12 @@ function DonationModal({ isOpenP, onClose }) {
   const handleShowChargeModal = () => {
     setOpenOtherModal(true);
   };
+
+  // 충전하기, 후원하기 모달창을 열고 닫을 때 경고 div 숨김 and inputCredit 초기화
+  useEffect(() => {
+    setShowWarning(false);
+    setInputCredit(0);
+  }, [isOpenP, openOtherModal]);
 
   return (
     <>
