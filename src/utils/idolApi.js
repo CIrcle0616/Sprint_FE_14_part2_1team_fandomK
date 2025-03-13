@@ -118,3 +118,22 @@ export const fetchChartDataByGender = async (gender, option) => {
     console.error("차트 불러오기 실패", error);
   }
 };
+
+export const fetchVoteIdol = async (id) => {
+  const voteIdol = id;
+  const url = `${BASE_URL}/votes`;
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(voteIdol),
+    });
+    if (!response.ok) throw new Error(`투표 HTTP 에러: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error("투표에 실패했습니다. ", error);
+  }
+};
