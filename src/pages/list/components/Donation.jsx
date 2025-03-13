@@ -117,7 +117,7 @@ const ProgressBar = styled.div`
     background-color: #F96D69;
 `;
 
-export default function Donation({ donation }) {
+export default function Donation({ donation,openDonationModal }) {
   const { idolId, title, subtitle, targetDonation, receiveDonations, idol } =
     donation;
 
@@ -125,7 +125,7 @@ export default function Donation({ donation }) {
     <DonationCard>
       <DonationImgWrapper>
         <DonationImg src={idol.profilePicture} alt="민지" />
-        <DonateBtn>후원하기</DonateBtn>
+        <DonateBtn onClick={openDonationModal}>후원하기</DonateBtn>
         <CoverImg src={donationImgCover} />
       </DonationImgWrapper>
       <DonationDescription>

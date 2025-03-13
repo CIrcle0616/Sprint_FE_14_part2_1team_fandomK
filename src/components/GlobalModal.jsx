@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 
 const ModalOverlay = styled.div`
   position: fixed;
+  z-index: 9999;
   width: 100%;
   height: 100%;
   top: 0;

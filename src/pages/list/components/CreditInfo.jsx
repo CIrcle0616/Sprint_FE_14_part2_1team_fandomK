@@ -2,6 +2,7 @@ import styled from "styled-components";
 import creditIc from "../../../assets/icon/ic_credit.png";
 import { useEffect, useState } from "react";
 import media from "../../../utils/mediaHelper";
+import ChargeModal from "../../../components/ChargeModal";
 
 const WrapCredit = styled.div`
   padding: 0 24px;
@@ -72,7 +73,7 @@ const ChargeLink = styled.a`
       font-size: 24px;`}
 `;
 
-export default function CreditInfo() {
+export default function CreditInfo({ openChargeModal }) {
   const [credit, setCredit] = useState();
 
   useEffect(() => {
@@ -90,7 +91,7 @@ export default function CreditInfo() {
             {credit}
           </Credit>
         </InnerDiv>
-        <ChargeLink>충전하기</ChargeLink>
+        <ChargeLink onClick={openChargeModal}>충전하기</ChargeLink>
       </CreditInfoDiv>
     </WrapCredit>
   );

@@ -38,12 +38,12 @@ const ChartWrapper = styled.div`
   }
 `;
 
-export default function IdolCharts() {
+export default function IdolCharts({ openVoteModal }) {
   return (
     <ChartWrapper>
       <div className="header">
         <h1>이달의 차트</h1>
-        <button>
+        <button onClick={openVoteModal}>
           <img src={chartIcon} />
           차트 투표하기
         </button>

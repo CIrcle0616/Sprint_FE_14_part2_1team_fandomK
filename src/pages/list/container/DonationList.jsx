@@ -60,7 +60,7 @@ const RightButton = styled.button`
 
 const itemsPerPage = 4;
 
-export default function DonationList() {
+export default function DonationList({openDonationModal}) {
   const [donations, setDonations] = useState([]);
   const [isDesktop, setIsDesktop] = useState(
     window.matchMedia("(min-width: 1024px)").matches
@@ -117,7 +117,7 @@ export default function DonationList() {
         )}
         {visibleDonations.map((donation) => (
           <DonationLi key={donation.id}>
-            <Donation donation={donation} />
+            <Donation donation={donation} openDonationModal={openDonationModal}/>
           </DonationLi>
         ))}
         {isDesktop ? (

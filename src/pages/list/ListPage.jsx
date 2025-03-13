@@ -1,3 +1,4 @@
+import { useState } from "react";
 import logoImg from "../../assets/images/logo.svg";
 import profileImg from "../../assets/images/fandomK-img-1-김채원.png";
 import styled from "styled-components";
@@ -5,6 +6,10 @@ import CreditInfo from "./components/CreditInfo";
 import DonationList from "./container/DonationList";
 import IdolCharts from "./components/IdolCharts";
 import media from "../../utils/mediaHelper";
+import ChargeModal from "../../components/ChargeModal";
+import DonationModal from "../../components/DonationModal";
+import VoteModal from "../../components/VoteModal";
+import AlertModal from "../../components/AlertModal";
 
 const Wrap = styled.div`
   max-width: 1248px;
@@ -62,19 +67,66 @@ const Profile = styled.a`
 `;
 
 export default function ListPage() {
+  const [isChargeModalOpen, setIsChargeModalOpen] = useState(false);
+  const [isVoteModalOpen, setIsVoteModalOpen] = useState(false);
+  const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
+  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
+
+  const openChargeModal = () => {
+    setIsChargeModalOpen(true);
+  };
+
+  const closeChargeModal = () => {
+    setIsChargeModalOpen(false);
+  };
+
+  const openVoteModal = () => {
+    setIsVoteModalOpen(true);
+  };
+
+  const closeVoteModal = () => {
+    setIsVoteModalOpen(false);
+  };
+
+  const openDonationModal = () => {
+    setIsDonationModalOpen(true);
+  };
+
+  const closeDonationModal = () => {
+    setIsDonationModalOpen(false);
+  };
+
+  const openAlertModal = () => {
+    setIsAlertModalOpen(true);
+  };
+
+  const closeAlertModal = () => {
+    setIsAlertModalOpen(false);
+  };
+
   return (
-    <Wrap>
-      <Header>
-        <Logo href="/abc">
-          <img src={logoImg} />
-        </Logo>
-        <Profile href="/mypage">
-          <img src={profileImg} />
-        </Profile>
-      </Header>
-      <CreditInfo />
-      <DonationList />
-      <IdolCharts />
-    </Wrap>
+    <>
+      <ChargeModal isOpenP={isChargeModalOpen} onClose={closeChargeModal} />
+
+      <VoteModal isOpenP={isVoteModalOpen} onClose={closeVoteModal} />
+      <DonationModal
+        isOpenP={isDonationModalOpen}
+        onClose={closeDonationModal}
+      />
+      <AlertModal isOpen={isAlertModalOpen} onClose={closeAlertModal} />
+      <Wrap>
+        <Header>
+          <Logo href="/abc">
+            <img src={logoImg} />
+          </Logo>
+          <Profile href="/mypage">
+            <img src={profileImg} />
+          </Profile>
+        </Header>
+        <CreditInfo openChargeModal={openChargeModal} />
+        <DonationList openDonationModal={openDonationModal}/>
+        <IdolCharts openVoteModal={openVoteModal}/>
+      </Wrap>
+    </>
   );
 }
