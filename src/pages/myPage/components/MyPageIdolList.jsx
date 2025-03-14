@@ -6,6 +6,7 @@ import IdolCircle from "../../../components/IdolCircle";
 const TotalIdolList = styled.ul`
   margin-bottom:48px;
   display:flex; gap:32px 22px;
+  flex-wrap:wrap
 `
 
 const IdolItem = styled.li`

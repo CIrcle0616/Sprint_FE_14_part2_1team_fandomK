@@ -50,7 +50,7 @@ export default function MyPage() {
         console.error("아이돌 데이터 로드 오류:", error);
         setError("아이돌 데이터를 불러오는 데 실패했습니다.");
       } finally {
-        setIsLoading(false); // 로딩 종료
+        //setIsLoading(false); // 로딩 종료
       }
     };
 
