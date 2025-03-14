@@ -60,7 +60,6 @@ const ProfileInfo = styled.div`
 `;
 
 
-
 export default function SelectedIdol({ idols = [], activeState, checkedIdols, toggleIdolSelection }) {
 
   return (
