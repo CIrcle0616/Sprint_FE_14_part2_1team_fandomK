@@ -2,6 +2,7 @@ import { useState , useEffect} from 'react';
 import styled from "styled-components";
 import  MyPickIdol from "../components/MyPickIdol"
 import  MyPageIdolList from "../components/MyPageIdolList"
+import PlusImageIconSrc from "/src/assets/images/ic_plus.png";
 
 const Title = styled.h2`
   margin-bottom:32px;
@@ -82,9 +83,9 @@ export default function MyPage() {
         toggleIdolSelection={toggleIdolSelection} // 아이돌 클릭 기능
       />
       <AddButton onClick={handleAddIdols}>
-        <img src="/src/assets/images/ic_plus.png"/>
+        <img src={PlusImageIconSrc} alt=""/>
         <span>추가하기</span>
-        </AddButton>
+      </AddButton>
     </InnerContainer>
 
   );
