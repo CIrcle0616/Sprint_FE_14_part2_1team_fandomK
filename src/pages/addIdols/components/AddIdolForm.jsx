@@ -53,6 +53,12 @@ const InputIdolInfo = styled.input`
   color: ${({ theme }) => theme.colors.whiteColor};
   padding: 16px;
   margin: 24px 0;
+  border: solid 1px #ffffff;
+
+  &:focus {
+    border: solid 1px #f86f65;
+    outline: none;
+  }
 `;
 
 const DisableInputEmpty = styled.div`
