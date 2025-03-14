@@ -1,10 +1,10 @@
-import { css } from 'styled-components';
+import { css } from "styled-components";
 
 // Breakpoints 정의 (px 단위)
 const breakpoints = {
   mobile: 576,
   tablet: 768,
-  desktop: 1024,
+  desktop: 1440,
 };
 
 // 미디어 쿼리 헬퍼 함수

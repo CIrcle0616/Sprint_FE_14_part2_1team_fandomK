@@ -60,10 +60,10 @@ const RightButton = styled.button`
 
 const itemsPerPage = 4;
 
-export default function DonationList({openDonationModal}) {
+export default function DonationList({ openDonationModal }) {
   const [donations, setDonations] = useState([]);
   const [isDesktop, setIsDesktop] = useState(
-    window.matchMedia("(min-width: 1024px)").matches
+    window.matchMedia("(min-width: 1440px)").matches
   );
   const [startIndex, setStartIndex] = useState(0);
 
@@ -77,7 +77,7 @@ export default function DonationList({openDonationModal}) {
   }, []);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+    const mediaQuery = window.matchMedia("(min-width: 1440px)");
     const handleResize = (e) => setIsDesktop(e.matches);
 
     mediaQuery.addEventListener("change", handleResize);
@@ -117,7 +117,10 @@ export default function DonationList({openDonationModal}) {
         )}
         {visibleDonations.map((donation) => (
           <DonationLi key={donation.id}>
-            <Donation donation={donation} openDonationModal={openDonationModal}/>
+            <Donation
+              donation={donation}
+              openDonationModal={openDonationModal}
+            />
           </DonationLi>
         ))}
         {isDesktop ? (
