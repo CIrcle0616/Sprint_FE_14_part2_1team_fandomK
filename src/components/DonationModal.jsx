@@ -101,20 +101,19 @@ function DonationModal({ isOpenP, onClose, donation }) {
   // 크레딧 입력창에 입력한 크레딧을 inputCredit에 저장
   const handleInputChange = (e) => {
     setInputCredit(Number(e.target.value));
+    setInputCredit(value);
   };
 
-  // 크레딧 입력창에서 focus가 밖으로 나갔을 때 보유 크레딧 부족 알림을 보여주기
-  const handleInputBlur = () => {
-    setDisableBtn(totalCredit < inputCredit);
+  // 인풋에 크레딧 입력시 실시간으로 크레딧 부족 경고를 받을 수 있게 변경
+  useEffect(() => {
     setShowWarning(totalCredit < inputCredit);
-  };
-
-  console.log(totalCredit < inputCredit);
+    setDisableBtn(totalCredit < inputCredit);
+  }, [totalCredit, inputCredit]);
 
   // 후원하기 버튼을 눌렀을때
   // 보유 크레딧에서 사용자가 입력한 크레딧을 뺀 크레딧을 localStorage에 저장
   const handleDonationButtonClick = () => {
-    if (totalCredit > inputCredit) {
+    if (totalCredit >= inputCredit) {
       setTotalCredit(totalCredit - inputCredit);
     }
   };
@@ -151,7 +150,6 @@ function DonationModal({ isOpenP, onClose, donation }) {
               $totalCredit={parseInt(totalCredit)}
               $inputCredit={inputCredit}
               onChange={handleInputChange}
-              onBlur={handleInputBlur}
             />
             <DonationImg src={creditIcon} />
             {/* 가지고 있는 크레딧 보다 많은 크레딧을 입력한 경우*/}
