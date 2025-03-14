@@ -99,7 +99,7 @@ export const fetchDeleteIdol = async (id) => {
 };
 
 export const fetchChartDataByGender = async (gender, option) => {
-  const { cursor, pageSize } = option;
+  const { cursor, pageSize=10 } = option;
   const params = new URLSearchParams();
 
   if (cursor) params.append("cursor", cursor);
