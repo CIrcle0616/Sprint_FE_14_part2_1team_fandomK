@@ -2,6 +2,7 @@ import { useState , useEffect} from 'react';
 import styled from "styled-components";
 import  MyPickIdol from "../components/MyPickIdol"
 import  MyPageIdolList from "../components/MyPageIdolList"
+import PlusImageIconSrc from "/src/assets/images/ic_plus.png";
 
 const Title = styled.h2`
   margin-bottom:32px;
@@ -11,8 +12,9 @@ const Title = styled.h2`
 `
 
 const InnerContainer = styled.div`
-padding:76px 0 81px
-  width:1200px; margin:0 auto;;
+  padding:76px 0 81px
+  width:1200px;
+  margin:0 auto;;
 `
 //추가하기 버튼
 const AddButton = styled.button`
@@ -28,7 +30,11 @@ const AddButton = styled.button`
   text-align: center;
   border-radius: 48px;
 
-  img {width:24px; height:24px; vertical-align:-7px; }
+  img {
+    width:24px;
+    height:24px;
+    vertical-align:-7px;
+  }
 `;
 export default function MyPage() {
   // 체크한 아이돌은 부모에서 상태관리
@@ -57,24 +63,48 @@ export default function MyPage() {
     fetchMockIdol();
   }, []);
 
-  const toggleIdolSelection = (idolId) => {//아이돌 선택/해제 함수
-    setCheckedIdols((prev) =>
-      prev.includes(idolId) ? prev.filter((id) => id !== idolId) : [...prev, idolId]
+  //아이돌 선택/해제 함수
+  const toggleIdolSelection = (idolId) => {
+    setCheckedIdols((prev) => prev.includes(idolId) ? prev.filter((id) => id !== idolId) : [...prev, idolId]
     );
   };
 
+  //추가하기 버튼 클릭 시 동작
   const handleAddIdols = () => {
     setFinalSelectedIdols(checkedIdols);
+    localStorage.setItem('checkedIdols', JSON.stringify(checkedIdols))
   }
+
 //checkedIdols 은 객체에 바로 반영되도록 useEffect 사용
   useEffect(() => {
-    console.log("Updated isActive:", checkedIdols);
-  }, [checkedIdols]);
+    //로컬 스토리지에서 데이터 불러오기
+    const savedCheckedIdols = JSON.parse(localStorage.getItem("checkedIdols")) || [];
+    if (savedCheckedIdols.length > 0) {
+      setCheckedIdols(savedCheckedIdols)
+      setFinalSelectedIdols(savedCheckedIdols)
+  }
+
+  }, []);
+
+  //아이돌 선택 해제 함수
+  const handleRemoveIdol = (idolId) => {
+    // 함수형 패턴 사용 : state값이 업데이트 되고 나서, 변경 후의 값을 참조하지 못하기 때문에 함수형 패턴으로 prev 값을 받아오면, 업데이트 후의 값을 받아올 수 있다.
+    setCheckedIdols((prev) => prev.filter((id) => id !== idolId));
+    setFinalSelectedIdols((prev) => prev.filter((id)=> id !== idolId));
+
+    // 해당 형태로 사용하면, checkedIdols 값이 변경이 되었을 때, 변경 후의 값을 받아오지 못함.
+    // setCheckedIdols((prev) => prev.filter((id) => id !== idolId));
+    // setFinalSelectedIdols(checkedIdols);
+  };
 
   return (
     <InnerContainer>
       <Title>관심 있는 아이돌을 추가해보세요.</Title>
-      <MyPickIdol idols={mockIdols} selectedIdols={finalSelectedIdols} />
+      <MyPickIdol
+        idols={mockIdols}
+        selectedIdols={finalSelectedIdols}
+        removeIdols={handleRemoveIdol}
+      />
       <Title>내가 관심있는 아이돌</Title>
       <MyPageIdolList
         idols={mockIdols} // 전체 아이돌 리스트
@@ -82,9 +112,9 @@ export default function MyPage() {
         toggleIdolSelection={toggleIdolSelection} // 아이돌 클릭 기능
       />
       <AddButton onClick={handleAddIdols}>
-        <img src="/src/assets/images/ic_plus.png"/>
+        <img src={PlusImageIconSrc} alt=""/>
         <span>추가하기</span>
-        </AddButton>
+      </AddButton>
     </InnerContainer>
 
   );
