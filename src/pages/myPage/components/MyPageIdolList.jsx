@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
 import styled from "styled-components";
 import IdolCircle from "../../../components/IdolCircle";
-import PlusImageMark from "/src/assets/images/img_checkmark.png";
+import CheckImageMark from "/src/assets/images/img_checkmark.png";
 
 //아이돌 리스트
 const TotalIdolList = styled.ul`
@@ -62,7 +61,7 @@ const ProfileInfo = styled.div`
 
 
 
-export default function SelectedIdol({ idols = [], activeState, checkedIdols, toggleIdolSelection }) {
+export default function SelectedIdol({ idols = [], checkedIdols, toggleIdolSelection }) {
 
   return (
     <div>
@@ -70,7 +69,6 @@ export default function SelectedIdol({ idols = [], activeState, checkedIdols, to
         {idols.map((idol) => (
           <IdolItem
             key={idol.id}
-            isActive={checkedIdols.includes(idol.id)}
           >
               <button
                 type="button"
@@ -78,7 +76,7 @@ export default function SelectedIdol({ idols = [], activeState, checkedIdols, to
                 onClick={() => toggleIdolSelection(idol.id)}
               >
               <IdolCircle idol={idol} />
-              {checkedIdols.includes(idol.id) ? <Layer><img src={PlusImageMark}/></Layer> : ''}
+              {checkedIdols.includes(idol.id) ? <Layer><img src={CheckImageMark}/></Layer> : ''}
             </button>
             <ProfileInfo>
               <span>{idol.name}</span>
