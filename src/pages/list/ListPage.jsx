@@ -8,7 +8,6 @@ import ChargeModal from "../../components/ChargeModal";
 import DonationModal from "../../components/DonationModal";
 import VoteModal from "../../components/VoteModal";
 import AlertModal from "../../components/AlertModal";
-import Header from "../../components/Header";
 
 const Wrap = styled.div`
   max-width: 1248px;
