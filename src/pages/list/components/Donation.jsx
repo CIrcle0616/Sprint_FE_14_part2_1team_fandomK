@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 import creditImg from "../../../assets/icon/ic_credit.png";
 import donationImgCover from "../../../assets/images/cover_donation.svg";
 import media from "../../../utils/mediaHelper";
+import { useState } from "react";
 
 const DonationCard = styled.div`
   max-width: 282px;
@@ -118,7 +119,7 @@ const ProgressBar = styled.div`
 `;
 
 export default function Donation({ donation, openDonationModal }) {
-  const { idolId, title, subtitle, targetDonation, receiveDonations, idol } =
+  const { title, subtitle, targetDonation, receiveDonations, idol } =
     donation;
 
   return (

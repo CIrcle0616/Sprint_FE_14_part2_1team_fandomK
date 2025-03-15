@@ -112,9 +112,8 @@ export const fetchDeleteDonation = async (id) => {
   }
 };
 
-const CONTRIBUTE_CREDIT = 10000;
 
-export const fetchPutDonationContribute = async (id) => {
+export const fetchPutDonationContribute = async (id ,contributeCredit) => {
   const url = `${BASE_URL}/donations/${id}/contribute`;
 
   try {
@@ -123,7 +122,7 @@ export const fetchPutDonationContribute = async (id) => {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ amount: CONTRIBUTE_CREDIT }),
+      body: JSON.stringify({ amount: contributeCredit }),
     });
 
     if (!response.ok) {

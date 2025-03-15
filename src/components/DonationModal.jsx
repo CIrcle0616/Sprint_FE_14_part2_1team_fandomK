@@ -5,6 +5,7 @@ import creditIcon from "../assets/icon/ic_credit.svg";
 import ChargeModal from "./ChargeModal";
 import useCredit from "../hooks/useCredit";
 import ModalButton from "./ModalButton";
+import { fetchPutDonationContribute } from "../utils/donationApi";
 
 const DonationContainer = styled.div`
   position: relative;
@@ -96,7 +97,7 @@ function DonationModal({ isOpenP, onClose, donation }) {
   const [disabledBtn, setDisableBtn] = useState(false);
 
   // donation 구조분해 할당
-  const { idol = {}, title = "", subtitle = "" } = donation || {};
+  const { id, idol = {}, title = "", subtitle = "" } = donation || {};
 
   // 크레딧 입력창에 입력한 크레딧을 inputCredit에 저장
   const handleInputChange = (e) => {
@@ -112,9 +113,10 @@ function DonationModal({ isOpenP, onClose, donation }) {
 
   // 후원하기 버튼을 눌렀을때
   // 보유 크레딧에서 사용자가 입력한 크레딧을 뺀 크레딧을 localStorage에 저장
-  const handleDonationButtonClick = () => {
+  const handleDonationButtonClick = async () => {
     if (totalCredit >= inputCredit) {
       setTotalCredit(totalCredit - inputCredit);
+      await fetchPutDonationContribute(id, inputCredit);
     }
   };
 

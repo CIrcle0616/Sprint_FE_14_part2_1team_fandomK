@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useOpen from "../../hooks/useOpen";
 import styled from "styled-components";
 import CreditInfo from "./components/CreditInfo";
@@ -8,6 +8,7 @@ import ChargeModal from "../../components/ChargeModal";
 import DonationModal from "../../components/DonationModal";
 import VoteModal from "../../components/VoteModal";
 import AlertModal from "../../components/AlertModal";
+import useCredit from "../../hooks/useCredit";
 
 const Wrap = styled.div`
   max-width: 1248px;
@@ -22,6 +23,11 @@ export default function ListPage() {
     useOpen();
   const [isAlertModalOpen, openAlertModal, closeAlertModal] = useOpen();
   const [selectedDonation, setSelectedDonation] = useState(null);
+  const [credit, setCredit] = useCredit();
+
+  useEffect(() => {
+    setCredit(credit || 0);
+  }, []);
 
   const handleOpenDonationModal = (donation) => {
     setSelectedDonation(donation);
@@ -40,7 +46,7 @@ export default function ListPage() {
       <AlertModal isOpen={isAlertModalOpen} onClose={closeAlertModal} />
       <Wrap>
         <CreditInfo openChargeModal={openChargeModal} />
-        <DonationList openDonationModal={handleOpenDonationModal} />
+        <DonationList isDonationModalOpen={isDonationModalOpen} openDonationModal={handleOpenDonationModal} />
         <IdolCharts openVoteModal={openVoteModal} />
       </Wrap>
     </>
