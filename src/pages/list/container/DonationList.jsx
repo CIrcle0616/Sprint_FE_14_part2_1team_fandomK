@@ -100,8 +100,6 @@ export default function DonationList({
     };
   }, []);
 
-  useEffect(() => {}, isDonationModalOpen);
-
   const handlePagination = (direction) => {
     if (direction === "left" && startIndex - ITEMS_PER_PAGE >= 0) {
       setStartIndex((prev) => prev - ITEMS_PER_PAGE);
