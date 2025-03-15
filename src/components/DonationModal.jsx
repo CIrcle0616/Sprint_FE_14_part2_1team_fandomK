@@ -89,7 +89,7 @@ const ChargeVisibleButton = styled.button`
   display: ${({ $showWarning }) => ($showWarning ? "block" : "none")};
 `;
 
-function DonationModal({ isOpenP, onClose, donation }) {
+function DonationModal({ isOpenP, onClose, donation, loadingAmountOfDonate }) {
   const [inputCredit, setInputCredit] = useState(0); // 사용자가 입력한 크레딧
   const [showWarning, setShowWarning] = useState(false); // 보유크레딧 보다 사용자가 입력한 크레딧이 많을 때
   const [totalCredit, setTotalCredit] = useCredit(); // 보유한 총 크레딧
@@ -115,7 +115,10 @@ function DonationModal({ isOpenP, onClose, donation }) {
   const handleDonationButtonClick = async () => {
     if (totalCredit >= inputCredit) {
       setTotalCredit(totalCredit - inputCredit);
-      await fetchPutDonationContribute(id, inputCredit);
+      const data = await fetchPutDonationContribute(id, inputCredit);
+      const { receivedDonations } = data;
+      loadingAmountOfDonate(id, receivedDonations);
+      onClose();
     }
   };
 

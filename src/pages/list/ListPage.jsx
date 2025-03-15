@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { fetchGetDonations } from "../../utils/donationApi";
 import useOpen from "../../hooks/useOpen";
 import styled from "styled-components";
 import CreditInfo from "./components/CreditInfo";
@@ -24,14 +25,43 @@ export default function ListPage() {
   const [isAlertModalOpen, openAlertModal, closeAlertModal] = useOpen();
   const [selectedDonation, setSelectedDonation] = useState(null);
   const [credit, setCredit] = useCredit();
+  const [donations, setDonations] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setCredit(credit || 0);
   }, []);
 
+  const getDonationListData = useCallback(async () => {
+    setIsLoading(true);
+    const { list } = await fetchGetDonations();
+    setDonations(list);
+    setIsLoading(false);
+    return;
+  }, []);
+
+  useEffect(() => {
+    getDonationListData();
+  }, [getDonationListData]);
+
+  useEffect(() => {
+    if (!isDonationModalOpen) {
+      getDonationListData();
+    }
+  }, [isDonationModalOpen, getDonationListData]);
+
   const handleOpenDonationModal = (donation) => {
     setSelectedDonation(donation);
     openDonationModal();
+  };
+
+  const loadingAmountOfDonate = (donationId, amountCredit) => {
+    const updateDonation = donations.map((donation) =>
+      donation.id === donationId
+        ? { ...donation, receivedDonations: amountCredit }
+        : donation
+    );
+    setDonations(updateDonation);
   };
 
   return (
@@ -42,11 +72,17 @@ export default function ListPage() {
         isOpenP={isDonationModalOpen}
         onClose={closeDonationModal}
         donation={selectedDonation}
+        loadingAmountOfDonate={loadingAmountOfDonate}
       />
       <AlertModal isOpen={isAlertModalOpen} onClose={closeAlertModal} />
       <Wrap>
         <CreditInfo openChargeModal={openChargeModal} />
-        <DonationList isDonationModalOpen={isDonationModalOpen} openDonationModal={handleOpenDonationModal} />
+        <DonationList
+          isLoading={isLoading}
+          donations={donations}
+          isDonationModalOpen={isDonationModalOpen}
+          openDonationModal={handleOpenDonationModal}
+        />
         <IdolCharts openVoteModal={openVoteModal} />
       </Wrap>
     </>

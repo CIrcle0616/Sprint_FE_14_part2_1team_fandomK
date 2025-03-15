@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Donation from "../components/Donation";
-import { fetchGetDonations } from "../../../utils/donationApi";
 import { styled } from "styled-components";
 import media from "../../../utils/mediaHelper";
 import leftBtnImg from "../../../assets/icon/btn_pagination_arrow_left.svg";
@@ -62,33 +61,15 @@ const PaginationArrow = ({ direction, onClick, src }) => (
 );
 
 export default function DonationList({
-  isDonationModalOpen,
+  donations,
+  isLoading,
   openDonationModal,
 }) {
-  const [donations, setDonations] = useState([]);
   const [isDesktop, setIsDesktop] = useState(
     window.matchMedia("(min-width: 1440px)").matches
   );
   const [startIndex, setStartIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const getDonationListData = useCallback(async () => {
-    setIsLoading(true);
-    const { list } = await fetchGetDonations();
-    setDonations(list);
-    setIsLoading(false);
-    return;
-  }, []);
-
-  useEffect(() => {
-    getDonationListData();
-  }, [getDonationListData]);
-
-  useEffect(() => {
-    if (!isDonationModalOpen) {
-      getDonationListData();
-    }
-  }, [isDonationModalOpen, getDonationListData]);
+  // const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 1440px)");
