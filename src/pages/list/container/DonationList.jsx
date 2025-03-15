@@ -5,6 +5,7 @@ import { styled } from "styled-components";
 import media from "../../../utils/mediaHelper";
 import leftBtnImg from "../../../assets/icon/btn_pagination_arrow_left.svg";
 import rightBtnImg from "../../../assets/icon/btn_pagination_arrow_right.svg";
+import DonationSkeleton from "../components/DonationSkeleton";
 
 const DonationFlexListWrap = styled.div`
   position: relative;
@@ -44,21 +45,21 @@ const RightDiv = styled.div`
   margin-left: -16px;
 `;
 
-const LeftButton = styled.button`
+const PaginationButton = styled.button`
   position: absolute;
   top: 170px;
-  left: -40px;
   cursor: pointer;
+  ${({ direction }) =>
+    direction === "left" ? "left: -40px;" : "right: -40px;"}
 `;
 
-const RightButton = styled.button`
-  position: absolute;
-  top: 170px;
-  right: -40px;
-  cursor: pointer;
-`;
+const ITEMS_PER_PAGE = 4;
 
-const itemsPerPage = 4;
+const PaginationArrow = ({ direction, onClick, src }) => (
+  <PaginationButton direction={direction} onClick={onClick}>
+    <img src={src} alt={`${direction} arrow`} />
+  </PaginationButton>
+);
 
 export default function DonationList({ openDonationModal }) {
   const [donations, setDonations] = useState([]);
@@ -66,11 +67,14 @@ export default function DonationList({ openDonationModal }) {
     window.matchMedia("(min-width: 1440px)").matches
   );
   const [startIndex, setStartIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getDonationListData = async () => {
+      setIsLoading(true);
       const { list } = await fetchGetDonations();
       setDonations(list);
+      setIsLoading(false);
       return;
     };
     getDonationListData();
@@ -86,52 +90,64 @@ export default function DonationList({ openDonationModal }) {
     };
   }, []);
 
-  const handleRightClick = () => {
-    if (startIndex + itemsPerPage < donations.length) {
-      setStartIndex((prev) => prev + itemsPerPage);
-    }
-  };
-  const handleLeftClick = () => {
-    if (startIndex - itemsPerPage >= 0) {
-      setStartIndex((prev) => prev - itemsPerPage);
+  const handlePagination = (direction) => {
+    if (direction === "left" && startIndex - ITEMS_PER_PAGE >= 0) {
+      setStartIndex((prev) => prev - ITEMS_PER_PAGE);
+    } else if (
+      direction === "right" &&
+      startIndex + ITEMS_PER_PAGE < donations.length
+    ) {
+      setStartIndex((prev) => prev + ITEMS_PER_PAGE);
     }
   };
 
-  const visibleDonations = donations.slice(
-    startIndex,
-    startIndex + itemsPerPage
+  const visibleDonations = isDesktop
+    ? donations.slice(startIndex, startIndex + ITEMS_PER_PAGE)
+    : donations;
+
+  const renderSkeleton = () => (
+    <>
+      {!isDesktop && <RightDiv />}
+      {Array.from({ length: ITEMS_PER_PAGE }).map((_, index) => (
+        <DonationLi key={index}>
+          <DonationSkeleton />
+        </DonationLi>
+      ))}
+      {!isDesktop && <RightDiv />}
+    </>
+  );
+
+  const renderContent = () => (
+    <>
+      {isDesktop && startIndex > 0 && (
+        <PaginationArrow
+          direction="left"
+          onClick={() => handlePagination("left")}
+          src={leftBtnImg}
+        />
+      )}
+      {!isDesktop && <RightDiv />}
+      {visibleDonations.map((donation) => (
+        <DonationLi key={donation.id}>
+          <Donation donation={donation} openDonationModal={openDonationModal} />
+        </DonationLi>
+      ))}
+      {isDesktop && startIndex + ITEMS_PER_PAGE < donations.length && (
+        <PaginationArrow
+          direction="right"
+          onClick={() => handlePagination("right")}
+          src={rightBtnImg}
+        />
+      )}
+      {!isDesktop && <RightDiv />}
+    </>
   );
 
   return (
     <DonationFlexListWrap>
       <h1>후원을 기다리는 조공</h1>
       <DonationFlexList>
-        {isDesktop ? (
-          startIndex === 0 || (
-            <LeftButton onClick={handleLeftClick}>
-              <img src={leftBtnImg} />
-            </LeftButton>
-          )
-        ) : (
-          <RightDiv />
-        )}
-        {visibleDonations.map((donation) => (
-          <DonationLi key={donation.id}>
-            <Donation
-              donation={donation}
-              openDonationModal={openDonationModal}
-            />
-          </DonationLi>
-        ))}
-        {isDesktop ? (
-          startIndex + itemsPerPage >= donations.length || (
-            <RightButton onClick={handleRightClick}>
-              <img src={rightBtnImg} />
-            </RightButton>
-          )
-        ) : (
-          <RightDiv />
-        )}
+        {isLoading ? renderSkeleton() : renderContent()}
       </DonationFlexList>
     </DonationFlexListWrap>
   );

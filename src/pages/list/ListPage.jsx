@@ -31,7 +31,6 @@ export default function ListPage() {
   return (
     <>
       <ChargeModal isOpenP={isChargeModalOpen} onClose={closeChargeModal} />
-
       <VoteModal isOpenP={isVoteModalOpen} onClose={closeVoteModal} />
       <DonationModal
         isOpenP={isDonationModalOpen}
