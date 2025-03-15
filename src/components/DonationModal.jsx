@@ -102,7 +102,6 @@ function DonationModal({ isOpenP, onClose, donation }) {
   // 크레딧 입력창에 입력한 크레딧을 inputCredit에 저장
   const handleInputChange = (e) => {
     setInputCredit(Number(e.target.value));
-    setInputCredit(value);
   };
 
   // 인풋에 크레딧 입력시 실시간으로 크레딧 부족 경고를 받을 수 있게 변경

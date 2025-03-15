@@ -5,37 +5,37 @@ const defaultGetOption = {
   priorityIdolIds: [123, 344],
 };
 
-export const fetchGetDonations = async (options = defaultGetOption) => {
-  const { cursor, pageSize, priorityIdolIds } = options;
-  const params = new URLSearchParams();
+// export const fetchGetDonations = async (options = defaultGetOption) => {
+//   const { cursor, pageSize, priorityIdolIds } = options;
+//   const params = new URLSearchParams();
 
-  if (cursor) params.append("cursor", cursor);
-  if (pageSize) params.append("pageSize", pageSize);
-  if (priorityIdolIds) {
-    priorityIdolIds.forEach(
-      (priorityIdolId) => params.append("priorityIdolIds", priorityIdolId) //우선순위 아이돌들의 id값을 받아서 params에 배열로 추가함
-    );
-  }
+//   if (cursor) params.append("cursor", cursor);
+//   if (pageSize) params.append("pageSize", pageSize);
+//   if (priorityIdolIds) {
+//     priorityIdolIds.forEach(
+//       (priorityIdolId) => params.append("priorityIdolIds", priorityIdolId) //우선순위 아이돌들의 id값을 받아서 params에 배열로 추가함
+//     );
+//   }
 
-  const queryString = params.toString();
-  const url = `${BASE_URL}/donations?${queryString ? `${queryString}` : ""}`;
+//   const queryString = params.toString();
+//   const url = `${BASE_URL}/donations?${queryString ? `${queryString}` : ""}`;
 
-  try {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP 오류: ${response.status}`);
-    }
+//   try {
+//     const response = await fetch(url, {
+//       method: "GET",
+//       headers: {
+//         "Content-type": "application/json",
+//       },
+//     });
+//     if (!response.ok) {
+//       throw new Error(`HTTP 오류: ${response.status}`);
+//     }
 
-    return await response.json();
-  } catch (error) {
-    console.error("Donations GET요청 실패", error);
-  }
-};
+//     return await response.json();
+//   } catch (error) {
+//     console.error("Donations GET요청 실패", error);
+//   }
+// };
 
 const demoDonation = {
   deadline: "2025-03-15T02:27:24.536Z",
@@ -112,24 +112,105 @@ export const fetchDeleteDonation = async (id) => {
   }
 };
 
+// export const fetchPutDonationContribute = async (id ,contributeCredit) => {
+//   const url = `${BASE_URL}/donations/${id}/contribute`;
 
-export const fetchPutDonationContribute = async (id ,contributeCredit) => {
-  const url = `${BASE_URL}/donations/${id}/contribute`;
+//   try {
+//     const response = await fetch(url, {
+//       method: "PUT",
+//       headers: {
+//         "Content-type": "application/json",
+//       },
+//       body: JSON.stringify({ amount: contributeCredit }),
+//     });
 
-  try {
-    const response = await fetch(url, {
-      method: "PUT",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({ amount: contributeCredit }),
-    });
+//     if (!response.ok) {
+//       throw new Error(`HTTP 오류: ${response.status}`);
+//     }
+//     return await response.json();
+//   } catch (error) {
+//     console.error("Donations PUT요청 실패", error);
+//   }
+// };
 
-    if (!response.ok) {
-      throw new Error(`HTTP 오류: ${response.status}`);
+export const fetchGetDonations = async (
+  options = defaultGetOption,
+  maxRetries = 3,
+  delay = 1000
+) => {
+  const { cursor, pageSize, priorityIdolIds } = options;
+  const params = new URLSearchParams();
+
+  if (cursor) params.append("cursor", cursor);
+  if (pageSize) params.append("pageSize", pageSize);
+  if (priorityIdolIds) {
+    priorityIdolIds.forEach((priorityIdolId) =>
+      params.append("priorityIdolIds", priorityIdolId)
+    );
+  }
+
+  const queryString = params.toString();
+  const url = `${BASE_URL}/donations?${queryString ? `${queryString}` : ""}`;
+  let attempts = 0;
+
+  while (attempts < maxRetries) {
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP 오류: ${response.status}`);
+      }
+
+      return await response.json(); // 성공 시 결과 반환
+    } catch (error) {
+      attempts++;
+      if (attempts === maxRetries) {
+        console.error("Donations GET요청 실패 (최대 재시도 초과)", error);
+        throw error; // 최대 재시도 후 실패 시 에러 던짐
+      }
+      console.log(`GET 재시도 중... (${maxRetries - attempts}번 남음)`);
+      await new Promise((resolve) => setTimeout(resolve, delay)); // 지연 후 재시도
     }
-    return await response.json();
-  } catch (error) {
-    console.error("Donations PUT요청 실패", error);
+  }
+};
+
+export const fetchPutDonationContribute = async (
+  id,
+  contributeCredit,
+  maxRetries = 3,
+  delay = 1000
+) => {
+  const url = `${BASE_URL}/donations/${id}/contribute`;
+  let attempts = 0;
+
+  while (attempts < maxRetries) {
+    try {
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ amount: contributeCredit }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP 오류: ${response.status}`);
+      }
+
+      return await response.json(); // 성공 시 결과 반환
+    } catch (error) {
+      attempts++;
+      if (attempts === maxRetries) {
+        console.error("Donations PUT요청 실패 (최대 재시도 초과)", error);
+        throw error; // 최대 재시도 후 실패 시 에러 던짐
+      }
+      console.log(`PUT 재시도 중... (${maxRetries - attempts}번 남음)`);
+      await new Promise((resolve) => setTimeout(resolve, delay)); // 지연 후 재시도
+    }
   }
 };
