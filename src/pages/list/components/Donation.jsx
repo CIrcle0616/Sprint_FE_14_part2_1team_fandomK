@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 import creditImg from "../../../assets/icon/ic_credit.png";
 import donationImgCover from "../../../assets/images/cover_donation.svg";
 import media from "../../../utils/mediaHelper";
-import { useState } from "react";
+import { useMemo } from "react";
 
 const DonationCard = styled.div`
   max-width: 282px;
@@ -112,15 +112,16 @@ const ProgressBar = styled.div`
   & div {
     position: absolute;
     inset: 0;
-    width: 60px;
+    width: ${({ fundingProgressPercent }) => `${fundingProgressPercent}%`};
     height: 1px;
     border-radius: 1px;
     background-color: #F96D69;
 `;
 
 export default function Donation({ donation, openDonationModal }) {
-  const { title, subtitle, targetDonation, receiveDonations, idol } =
-    donation;
+  const { title, subtitle, targetDonation, receivedDonations, idol } = donation;
+  const fundingProgressPercent =
+    (receivedDonations / targetDonation).toFixed(2) * 100;
 
   return (
     <DonationCard>
@@ -138,11 +139,11 @@ export default function Donation({ donation, openDonationModal }) {
         <ProgressBarWrap>
           <CreditCount>
             <img src={creditImg} alt="credit" />
-            <span>{receiveDonations || "6,000"}</span>
+            <span>{receivedDonations || "0"}</span>
           </CreditCount>
           <TextSpan>5일 남음</TextSpan>
         </ProgressBarWrap>
-        <ProgressBar>
+        <ProgressBar fundingProgressPercent={fundingProgressPercent}>
           <div></div>
         </ProgressBar>
       </DonationDescription>
