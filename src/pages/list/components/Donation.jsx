@@ -112,6 +112,7 @@ const ProgressBar = styled.div`
   & div {
     position: absolute;
     inset: 0;
+    max-width: 100%;
     width: ${({ fundingProgressPercent }) => `${fundingProgressPercent}%`};
     height: 1px;
     border-radius: 1px;

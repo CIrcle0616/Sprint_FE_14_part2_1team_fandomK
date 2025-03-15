@@ -115,10 +115,14 @@ function DonationModal({ isOpenP, onClose, donation, loadingAmountOfDonate }) {
   const handleDonationButtonClick = async () => {
     if (totalCredit >= inputCredit) {
       setTotalCredit(totalCredit - inputCredit);
-      const data = await fetchPutDonationContribute(id, inputCredit);
-      const { receivedDonations } = data;
-      loadingAmountOfDonate(id, receivedDonations);
-      onClose();
+      try {
+        onClose();
+        const data = await fetchPutDonationContribute(id, inputCredit);
+        const { receivedDonations } = data;
+        loadingAmountOfDonate(id, receivedDonations);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 

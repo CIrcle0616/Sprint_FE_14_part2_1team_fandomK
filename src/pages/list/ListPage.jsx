@@ -44,11 +44,11 @@ export default function ListPage() {
     getDonationListData();
   }, [getDonationListData]);
 
-  useEffect(() => {
-    if (!isDonationModalOpen) {
-      getDonationListData();
-    }
-  }, [isDonationModalOpen, getDonationListData]);
+  // useEffect(() => {
+  //   if (!isDonationModalOpen) {
+  //     getDonationListData();
+  //   }
+  // }, [isDonationModalOpen, getDonationListData]);
 
   const handleOpenDonationModal = (donation) => {
     setSelectedDonation(donation);
