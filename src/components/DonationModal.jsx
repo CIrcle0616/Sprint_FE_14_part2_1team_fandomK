@@ -5,6 +5,7 @@ import creditIcon from "../assets/icon/ic_credit.svg";
 import ChargeModal from "./ChargeModal";
 import useCredit from "../hooks/useCredit";
 import ModalButton from "./ModalButton";
+import { fetchPutDonationContribute } from "../utils/donationApi";
 
 const DonationContainer = styled.div`
   position: relative;
@@ -88,7 +89,7 @@ const ChargeVisibleButton = styled.button`
   display: ${({ $showWarning }) => ($showWarning ? "block" : "none")};
 `;
 
-function DonationModal({ isOpenP, onClose, donation }) {
+function DonationModal({ isOpenP, onClose, donation, loadingAmountOfDonate }) {
   const [inputCredit, setInputCredit] = useState(0); // 사용자가 입력한 크레딧
   const [showWarning, setShowWarning] = useState(false); // 보유크레딧 보다 사용자가 입력한 크레딧이 많을 때
   const [totalCredit, setTotalCredit] = useCredit(); // 보유한 총 크레딧
@@ -96,12 +97,11 @@ function DonationModal({ isOpenP, onClose, donation }) {
   const [disabledBtn, setDisableBtn] = useState(false);
 
   // donation 구조분해 할당
-  const { idol = {}, title = "", subtitle = "" } = donation || {};
+  const { id, idol = {}, title = "", subtitle = "" } = donation || {};
 
   // 크레딧 입력창에 입력한 크레딧을 inputCredit에 저장
   const handleInputChange = (e) => {
     setInputCredit(Number(e.target.value));
-    setInputCredit(value);
   };
 
   // 인풋에 크레딧 입력시 실시간으로 크레딧 부족 경고를 받을 수 있게 변경
@@ -112,9 +112,17 @@ function DonationModal({ isOpenP, onClose, donation }) {
 
   // 후원하기 버튼을 눌렀을때
   // 보유 크레딧에서 사용자가 입력한 크레딧을 뺀 크레딧을 localStorage에 저장
-  const handleDonationButtonClick = () => {
+  const handleDonationButtonClick = async () => {
     if (totalCredit >= inputCredit) {
       setTotalCredit(totalCredit - inputCredit);
+      try {
+        onClose();
+        const data = await fetchPutDonationContribute(id, inputCredit);
+        const { receivedDonations } = data;
+        loadingAmountOfDonate(id, receivedDonations);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 

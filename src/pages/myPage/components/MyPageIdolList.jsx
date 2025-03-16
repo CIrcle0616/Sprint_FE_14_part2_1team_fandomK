@@ -1,25 +1,52 @@
-import { useState, useEffect } from "react";
 import styled from "styled-components";
+import media from "../../../utils/mediaHelper";
 import IdolCircle from "../../../components/IdolCircle";
+import CheckImageMark from "/src/assets/images/img_checkmark.png";
 
 //아이돌 리스트
 const TotalIdolList = styled.ul`
-  margin-bottom:48px;
-  display:flex; gap:32px 22px;
-  flex-wrap:wrap
+  margin-top:1.6rem;
+  margin-bottom:4rem;
+  display:flex;
+  gap:1.7rem 2.4rem;
+  flex-wrap:wrap;
+  ${media.tablet`
+     margin-top:5.7rem;
+      gap:2.4rem;
+
+  `}
+  ${media.desktop`
+     margin-top:3.2rem;
+    margin-bottom:4.8rem;
+    gap:2.2rem 3.1rem;
+  `}
+
 `
 
 const IdolItem = styled.li`
-  margin-bottom: 10px;
 
   button {
     position:relative;
     overflow:hidden;
     border:1px solid #F77063;
     border-radius:50%;
+    width:9.8rem;
+    height:9.8rem;
+    margin-bottom:0.8rem;
+    ${media.tablet`
+      width:12.8rem;
+      height:12.8rem;
+    `}
+    ${media.desktop`
+      width:12.8rem;
+      height:12.8rem;
+    `}
   }
   img {
-  border:none;
+    padding:5%;
+    width:100%;
+    height:100%;
+    border:none;
     &:hover {
       transform:scale(1.2);
       transition:all 0.4s;
@@ -31,11 +58,12 @@ const IdolItem = styled.li`
 // 아이돌 아이템 영역 체크 표시
 const Layer = styled.div`
   position:absolute;
-  top:0;
-  left:0;
+  top:50%;
+  left:50%;
   z-index:10;
-  width: 100%;
-  height: 100%;
+  transform:translate(-50%,-50%);
+  width: 90%;
+  height: 90%;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -43,49 +71,61 @@ const Layer = styled.div`
   background: linear-gradient(271.36deg, rgba(249, 110, 104, 0.5) -9.84%, rgba(254, 87, 143, 0.5) 107.18%);
 
   img {
-    width:52px;
-    height:52px;
+    width:5.2rem;
+    height:5.2rem;
   }
 `;
 
 
 //아이돌 정보
 const ProfileInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  color: #fff;
-  font-size: 16px;
-  line-height: 26px;
-  text-align: center;
+  display:flex;
+  flex-direction:column;
+  gap:0.2rem;
+  line-height:2.6rem;
+  font-size:1.6rem;
+  text-align:center;
+  color:#fff;
+
+  strong {
+    font-weight:700;
+  }
+  span {
+    line-height:1.7rem;
+    font-size:1.4rem;
+    color:#FFFFFF99;
+
+    ${media.tablet`
+      line-height:2.8rem;
+    `}
+  }
 `;
 
 
-export default function SelectedIdol({ idols = [], activeState, checkedIdols, toggleIdolSelection }) {
+
+export default function SelectedIdol({ idols = [], checkedIdols, toggleIdolSelection }) {
 
   return (
-    <div>
-      <TotalIdolList>
-        {idols.map((idol) => (
-          <IdolItem
-            key={idol.id}
-            isActive={checkedIdols.includes(idol.id)}
-          >
-              <button
-                type="button"
-                data-id={idol.id}
-                onClick={() => toggleIdolSelection(idol.id)}
-              >
-              <IdolCircle idol={idol} />
-              {checkedIdols.includes(idol.id) ? <Layer><img src="/src/assets/images/img_checkmark.png"/></Layer> : ''}
-            </button>
-            <ProfileInfo>
-              <span>{idol.name}</span>
-              <span>{idol.group}</span>
-            </ProfileInfo>
-          </IdolItem>
-        ))}
-      </TotalIdolList>
-    </div>
+    <TotalIdolList>
+      {idols.map((idol) => (
+        <IdolItem
+          key={idol.id}
+        >
+            <button
+              type="button"
+              data-id={idol.id}
+              onClick={() => toggleIdolSelection(idol.id)}
+            >
+            <IdolCircle idol={idol} />
+            {checkedIdols.includes(idol.id) ? <Layer><img src={CheckImageMark}/></Layer> : ''}
+          </button>
+          <ProfileInfo>
+            <strong>{idol.name}</strong>
+            <span>{idol.group}</span>
+          </ProfileInfo>
+        </IdolItem>
+      ))}
+    </TotalIdolList>
   );
 }
 
