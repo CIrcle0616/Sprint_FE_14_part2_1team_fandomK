@@ -60,13 +60,14 @@ const LoadMoreIdolBtn = styled.button`
   white-space: nowrap;
 `;
 
-export default function ChartTable() {
+export default function ChartTable({ setChartGender }) {
   const [idols, setIdols] = useState([]);
   const [selectedGender, setSelectedGender] = useState("female");
   const [currentCursor, setCurrentCursor] = useState(null);
 
   const handleGenderClick = (gender) => {
     setSelectedGender(gender);
+    setChartGender(gender); //성별 탭 변경 시 투표하기 모달의 리스트 변경
   };
 
   useEffect(() => {
