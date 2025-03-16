@@ -1,38 +1,68 @@
 import { useState , useEffect} from 'react';
 import styled from "styled-components";
+import media from "../../../utils/mediaHelper";
 import  MyPickIdol from "../components/MyPickIdol"
 import  MyPageIdolList from "../components/MyPageIdolList"
 import PlusImageIconSrc from "/src/assets/images/ic_plus.png";
 
 const Title = styled.h2`
-  margin-bottom:32px;
-  line-height:26px;
-  font-size:24px;
+  margin-bottom:1.2rem;
+  line-height:2.6rem;
+  font-size:1.6rem;
   color:#fff;
+
+  ${media.tablet`
+    margin-bottom:2.5rem;
+    font-size: 2rem;
+  `}
+  ${media.desktop`
+    margin-bottom:3.2rem;
+    font-size: 2.4rem;
+  `}
 `
 
 const InnerContainer = styled.div`
-  padding:76px 0 81px
-  width:1200px;
-  margin:0 auto;;
+  margin:0 auto;
+  padding:1.4rem 2.4rem 10.6rem;
+  box-sizing:border-box;
+  ${media.tablet`
+    padding-bottom:8.1rem;
+  `}
+  ${media.desktop`
+    padding-top:7.6rem;
+    width:1200px;
+  `}
 `
-//추가하기 버튼
+const FloatingButton = styled.div`
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    width:100%;
+    height:10.6rem;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    background-color:#02000E;
+`
+
 const AddButton = styled.button`
   display: block;
   margin: 0 auto;
-  width: 255px;
-  height: 48px;
+  width:255px;
+  height: 4.8rem;
   background: linear-gradient(91.18deg, #F77063 3.33%, #FE5790 99.37%);
-  color: #fff;
-  font-size: 16px;
-  line-height: 26px;
-  font-weight: bold;
+  border-radius: 2.4rem;
+  line-height: 2.6rem;
   text-align: center;
-  border-radius: 48px;
+  font-weight: bold;
+  font-size: 1.6rem;
+  color: #fff;
 
   img {
-    width:24px;
-    height:24px;
+    margin-right:.8rem;
+    width:2.4rem;
+    height:2.4rem;
     vertical-align:-7px;
   }
 `;
@@ -111,10 +141,12 @@ export default function MyPage() {
         checkedIdols={checkedIdols} // 체크한 아이돌 모음
         toggleIdolSelection={toggleIdolSelection} // 아이돌 클릭 기능
       />
-      <AddButton onClick={handleAddIdols}>
-        <img src={PlusImageIconSrc} alt=""/>
-        <span>추가하기</span>
-      </AddButton>
+      <FloatingButton>
+        <AddButton onClick={handleAddIdols}>
+          <img src={PlusImageIconSrc} alt=""/>
+          <span>추가하기</span>
+        </AddButton>
+      </FloatingButton>
     </InnerContainer>
 
   );
