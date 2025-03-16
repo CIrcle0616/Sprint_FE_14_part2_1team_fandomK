@@ -1,6 +1,5 @@
 import Modal from "./GlobalModal";
 import creditIcon from "../assets/icon/ic_credit.svg";
-import { useNavigate } from "react-router-dom";
 import ChargeModal from "./ChargeModal";
 import { useState } from "react";
 import styled from "styled-components";
@@ -13,16 +12,18 @@ const CreditImg = styled.img`
 `;
 
 const AlertDiv = styled.div`
+  width: 228px;
   color: #ffffff;
-  font-size: 16px;
-  margin: 33px;
+  font-size: 13px;
+  text-align: center;
+  margin: 31px auto;
 
   span {
     color: #f96d69;
   }
 `;
 
-function AlertModal({ isOpen, onClose }) {
+function AlertModal({ isOpen, onClose, setIsChargeModalOpen }) {
   const [openChargeModal, setOpenChargeModal] = useState(false);
 
   const handleConfirmBtn = () => {
@@ -30,13 +31,13 @@ function AlertModal({ isOpen, onClose }) {
   };
 
   const handleOpenChargeModal = () => {
-    onClose();
+    setIsChargeModalOpen(true);
     setOpenChargeModal(true);
   };
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} className="alert">
         <CreditImg src={creditIcon} alt="Credit Icon" />
         <AlertDiv>
           앗! 투표하기 위한 <span>크레딧</span>이 부족해요
@@ -46,7 +47,10 @@ function AlertModal({ isOpen, onClose }) {
       </Modal>
       <ChargeModal
         isOpenP={openChargeModal}
-        onClose={() => setOpenChargeModal(false)}
+        onClose={() => {
+          setOpenChargeModal(false);
+          setIsChargeModalOpen(false);
+        }}
       />
     </>
   );
