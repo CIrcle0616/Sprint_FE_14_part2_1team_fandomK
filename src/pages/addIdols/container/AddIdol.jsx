@@ -1,10 +1,11 @@
 import backIcon from "../../../assets/icon/ic_back.png";
 import AddIdolForm from "../components/AddIdolForm";
 import { styled } from "styled-components";
+import { Link } from "react-router-dom";
 
 const AddIdolContainer = styled.div`
-  width: 700px;
-  margin: 10px auto;
+  width: max-content;
+  margin: 50px auto;
 `;
 
 const AddIdolHeader = styled.div`
@@ -23,8 +24,10 @@ export default function AddIdol() {
   return (
     <AddIdolContainer>
       <AddIdolHeader>
-        <img src={backIcon} />
-        <div>아이돌 추가하기</div>
+        <Link to="/mypage">
+          <img src={backIcon} />
+        </Link>
+        <div>뒤로가기</div>
       </AddIdolHeader>
       <AddIdolForm />
     </AddIdolContainer>

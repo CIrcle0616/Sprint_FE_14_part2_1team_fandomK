@@ -5,13 +5,13 @@ const ModalChildren = styled.div`
   display: flex;
   width: 250px;
   align-items: flex-start;
-  gap: 24px;
-  margin: 20px 0;
+  gap: 30px;
+  margin: 20px 10px;
 `;
 
 const ModalImgContainer = styled.div`
-  width: 128px;
-  height: 128px;
+  width: 113px;
+  height: 113px;
   border: solid 1px ${({ theme }) => theme.colors.brandColor1};
   border-radius: 50%;
   display: flex;
@@ -24,6 +24,9 @@ const IdolInfo = styled.div`
   flex-direction: column;
   gap: 16px;
   padding: 16px 0;
+  flex-grow: 1;
+  margin: auto;
+  color: ${({ theme }) => theme.colors.whiteColor};
 
   div:first-child {
     font-size: ${({ theme }) => theme.fontSize.large};
@@ -52,8 +55,8 @@ const ModalButton = styled.button`
 `;
 
 const ModalImg = styled.img`
-  width: 115px;
-  height: 115px;
+  width: 105px;
+  height: 105px;
   background-color: ${({ theme }) => theme.colors.grayColor4};
   opacity: 0.7;
   border-radius: 50%;
