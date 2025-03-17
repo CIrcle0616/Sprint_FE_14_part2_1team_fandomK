@@ -40,6 +40,8 @@ const ChargeContent = styled.div`
   }
 `;
 
+const ChargeInput = styled.input``;
+
 // 메인페이지의 내 크레딧 영역의 충전하기를 누르면 나오는 모달
 function ChargeModal({ isOpenP, onClose }) {
   const [selectCredit, setSelectCredit] = useState(100); // 사용자가 선택한 크레딧

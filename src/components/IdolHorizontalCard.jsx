@@ -27,11 +27,11 @@ export const IdolHorizontalCardDiv = styled.div`
 //   totalVotes: 200400,
 // };
 
-export default function IdolHorizontalCard({ idol, flex, idx }) {
+export default function IdolHorizontalCard({ idol, flex, idx, isSelected }) {
   const rank = idx + 1;
   return (
     <IdolHorizontalCardDiv>
-      <IdolCircle idol={idol} size={"70px"} />
+      <IdolCircle idol={idol} size={"70px"} isSelected={isSelected} />
       <div>{rank}</div>
       <IdolInfo idol={idol} flex={flex} />
     </IdolHorizontalCardDiv>

@@ -5,10 +5,8 @@ import creditIcon from "../assets/icon/ic_credit.svg";
 import ChargeModal from "./ChargeModal";
 import useCredit from "../hooks/useCredit";
 import ModalButton from "./ModalButton";
-
-const DonationContainer = styled.div`
-  position: relative;
-`;
+import { Button } from "./ModalButton";
+import { fetchPutDonationContribute } from "../utils/donationApi";
 
 const DonationContent = styled.div`
   width: 295px;
@@ -17,12 +15,6 @@ const DonationContent = styled.div`
   align-items: center;
   gap: 10px;
   margin-bottom: 24px;
-
-  img {
-    width: 158px;
-    height: 206px;
-    border-radius: 8px;
-  }
 
   div:nth-of-type(1) {
     font-size: 12px;
@@ -35,6 +27,17 @@ const DonationContent = styled.div`
   }
 `;
 
+const ImgContainer = styled.div`
+  width: 158px;
+  height: 206px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+`;
 const DonationInfo = styled.div`
   display: flex;
   flex-direction: column;
@@ -70,9 +73,12 @@ const DonationInput = styled.input`
   }
 `;
 
+const DonationInputContainer = styled.div`
+  position: relative;
+`;
 const DonationImg = styled.img`
   position: absolute;
-  right: 10px;
+  right: 15px;
   bottom: 13px;
 `;
 
@@ -81,14 +87,13 @@ const DonatioVisibleDiv = styled.div`
   height: 14px;
   font-size: 12px;
   color: #ff2626;
-  margin-top: 7px;
 `;
 
-const ChargeVisibleButton = styled.button`
+const ChargeVisibleButton = styled(Button)`
   display: ${({ $showWarning }) => ($showWarning ? "block" : "none")};
 `;
 
-function DonationModal({ isOpenP, onClose, donation }) {
+function DonationModal({ isOpenP, onClose, donation, loadingAmountOfDonate }) {
   const [inputCredit, setInputCredit] = useState(0); // 사용자가 입력한 크레딧
   const [showWarning, setShowWarning] = useState(false); // 보유크레딧 보다 사용자가 입력한 크레딧이 많을 때
   const [totalCredit, setTotalCredit] = useCredit(); // 보유한 총 크레딧
@@ -96,12 +101,11 @@ function DonationModal({ isOpenP, onClose, donation }) {
   const [disabledBtn, setDisableBtn] = useState(false);
 
   // donation 구조분해 할당
-  const { idol = {}, title = "", subtitle = "" } = donation || {};
+  const { id, idol = {}, title = "", subtitle = "" } = donation || {};
 
   // 크레딧 입력창에 입력한 크레딧을 inputCredit에 저장
   const handleInputChange = (e) => {
     setInputCredit(Number(e.target.value));
-    setInputCredit(value);
   };
 
   // 인풋에 크레딧 입력시 실시간으로 크레딧 부족 경고를 받을 수 있게 변경
@@ -112,9 +116,17 @@ function DonationModal({ isOpenP, onClose, donation }) {
 
   // 후원하기 버튼을 눌렀을때
   // 보유 크레딧에서 사용자가 입력한 크레딧을 뺀 크레딧을 localStorage에 저장
-  const handleDonationButtonClick = () => {
+  const handleDonationButtonClick = async () => {
     if (totalCredit >= inputCredit) {
       setTotalCredit(totalCredit - inputCredit);
+      try {
+        onClose();
+        const data = await fetchPutDonationContribute(id, inputCredit);
+        const { receivedDonations } = data;
+        loadingAmountOfDonate(id, receivedDonations);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -136,14 +148,16 @@ function DonationModal({ isOpenP, onClose, donation }) {
     <>
       {!openOtherModal && (
         <Modal title="후원하기" isOpen={isOpenP} onClose={onClose}>
-          <DonationContainer>
-            <DonationContent>
+          <DonationContent>
+            <ImgContainer>
               <img src={idol.profilePicture}></img>
-              <DonationInfo>
-                <div>{subtitle}</div>
-                <div>{title}</div>
-              </DonationInfo>
-            </DonationContent>
+            </ImgContainer>
+            <DonationInfo>
+              <div>{subtitle}</div>
+              <div>{title}</div>
+            </DonationInfo>
+          </DonationContent>
+          <DonationInputContainer>
             <DonationInput
               placeholder="크레딧 입력"
               type="number"
@@ -152,11 +166,11 @@ function DonationModal({ isOpenP, onClose, donation }) {
               onChange={handleInputChange}
             />
             <DonationImg src={creditIcon} />
-            {/* 가지고 있는 크레딧 보다 많은 크레딧을 입력한 경우*/}
-            <DonatioVisibleDiv $showWarning={showWarning}>
-              갖고 있는 크레딧보다 더 많이 후원할 수 없어요
-            </DonatioVisibleDiv>
-          </DonationContainer>
+          </DonationInputContainer>
+          {/* 가지고 있는 크레딧 보다 많은 크레딧을 입력한 경우*/}
+          <DonatioVisibleDiv $showWarning={showWarning}>
+            갖고 있는 크레딧보다 더 많이 후원할 수 없어요
+          </DonatioVisibleDiv>
           <ModalButton
             onClick={handleDonationButtonClick}
             disabled={disabledBtn}

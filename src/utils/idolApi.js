@@ -99,7 +99,7 @@ export const fetchDeleteIdol = async (id) => {
 };
 
 export const fetchChartDataByGender = async (gender, option) => {
-  const { cursor, pageSize=10 } = option;
+  const { cursor, pageSize = 10 } = option;
   const params = new URLSearchParams();
 
   if (cursor) params.append("cursor", cursor);
@@ -129,7 +129,7 @@ export const fetchVoteIdol = async (id) => {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(voteIdol),
+      body: JSON.stringify({ idolId: voteIdol }),
     });
     if (!response.ok) throw new Error(`투표 HTTP 에러: ${response.status}`);
     return await response.json();
