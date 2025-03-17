@@ -5,7 +5,7 @@ const GlobalStyles = createGlobalStyle`
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
 html {font-size: 62.5%; }
 body, button, dd, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, input, legend, li, ol, p, select, table, td, textarea, th, ul {margin:0;padding:0}
-body, button, input, select, table, textarea {font-size:12px;line-height:16px;color:#202020;font-family:'Pretendard',${({theme}) =>  theme.fontFamily.main}, "맑은 고딕", helvetica, "Apple SD Gothic Neo", sans-serif}
+body, button, input, select, table, textarea {font-size:10px;line-height:16px;color:#202020;font-family:'Pretendard',${({theme}) =>  theme.fontFamily.main}, "맑은 고딕", helvetica, "Apple SD Gothic Neo", sans-serif}
 h1, h2, h3, h4, h5, h6 {font-size:inherit;line-height:inherit}
 textarea {-webkit-backface-visibility:hidden;backface-visibility:hidden;background-color:transparent;border:0;word-break:keep-all;word-wrap:break-word}
 button, input {-webkit-border-radius:0;border-radius:0;border:0}

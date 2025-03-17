@@ -90,6 +90,7 @@ const DonatioVisibleDiv = styled.div`
 `;
 
 const ChargeVisibleButton = styled(Button)`
+  margin-top: 0;
   display: ${({ $showWarning }) => ($showWarning ? "block" : "none")};
 `;
 

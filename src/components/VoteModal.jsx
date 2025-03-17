@@ -15,7 +15,7 @@ import { Button } from "./ModalButton";
 const VoteDiv = styled.div`
   background: #181d26;
   overflow-y: auto;
-  max-height: 495px;
+  max-height: 480px;
 
   &::-webkit-scrollbar {
     display: none;
@@ -105,7 +105,7 @@ const VoteModal = ({ isOpenP, onClose, chartGender }) => {
   const [alert, setAlert] = useState(false);
   const [selectIdol, setSelectIdol] = useState(null);
   const [windowSize, setWindowSize] = useState(window.innerHeight);
-  const [windowWidth, setWindowWith] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [notSelectedIdol, setNotSelectedIdol] = useState(false);
   const [isChargeModalOpen, setIsChargeModalOpen] = useState(false);
 
@@ -117,7 +117,15 @@ const VoteModal = ({ isOpenP, onClose, chartGender }) => {
       pageSize: newPageSize, // 초기 데이터 충분히 로드
       cursor: fetchCursor,
     });
-    setIdolList((prevList) => (reset ? idols : [...prevList, ...idols]));
+
+    // 아이돌 리스트가 중복 호출되는 버그 방지
+    setIdolList((prevList) => {
+      const newIdols = idols.filter(
+        (idol) => !prevList.some((prev) => prev.id === idol.id)
+      );
+
+      return reset ? idols : [...prevList, ...newIdols];
+    });
     setCursor(nextCursor);
   };
 
@@ -157,12 +165,21 @@ const VoteModal = ({ isOpenP, onClose, chartGender }) => {
       // cursor:null로 첫페이지 리스트 로드
       fetchIdolList(true);
     }
-  }, [isOpenP, chartGender]);
+  }, [isOpenP, chartGender, windowWidth]);
 
   useEffect(() => {
     const innerSize = () => setWindowSize(window.innerHeight);
     window.addEventListener("resize", innerSize);
     return () => window.removeEventListener("resize", innerSize);
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const newWidth = window.innerWidth;
+      setWindowWidth(newWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleScroll = (e) => {
