@@ -38,11 +38,7 @@ const ChartWrapper = styled.div`
   }
 `;
 
-export default function IdolCharts({
-  openVoteModal,
-  chartGender,
-  setChartGender,
-}) {
+export default function IdolCharts({ openVoteModal, setChartGender }) {
   return (
     <ChartWrapper>
       <div className="header">
