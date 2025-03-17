@@ -9,6 +9,7 @@ const Table = styled.div`
   & .chartHeader {
     display: flex;
   }
+  padding-bottom: 150px;
 `;
 
 const MenuComp = styled.button`
@@ -99,6 +100,7 @@ export default function ChartTable({ setChartGender }) {
   }, [selectedGender, pageSize]);
 
   const handleLoadMoreClick = async () => {
+    if (currentCursor === null) return;
     const { idols: loadedIdol, nextCursor } = await fetchChartDataByGender(
       selectedGender,
       { cursor: currentCursor, pageSize }
@@ -131,7 +133,9 @@ export default function ChartTable({ setChartGender }) {
           </li>
         ))}
       </OrderedList>
-      <LoadMoreIdolBtn onClick={handleLoadMoreClick}>더 보기</LoadMoreIdolBtn>
+      {currentCursor && (
+        <LoadMoreIdolBtn onClick={handleLoadMoreClick}>더 보기</LoadMoreIdolBtn>
+      )}
     </Table>
   );
 }
