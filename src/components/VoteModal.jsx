@@ -15,7 +15,7 @@ import { Button } from "./ModalButton";
 const VoteDiv = styled.div`
   background: #181d26;
   overflow-y: auto;
-  max-height: 495px;
+  max-height: 480px;
 
   &::-webkit-scrollbar {
     display: none;
@@ -167,11 +167,11 @@ const VoteModal = ({ isOpenP, onClose, chartGender }) => {
     }
   }, [isOpenP, chartGender, windowWidth]);
 
-  // useEffect(() => {
-  //   const innerSize = () => setWindowSize(window.innerHeight);
-  //   window.addEventListener("resize", innerSize);
-  //   return () => window.removeEventListener("resize", innerSize);
-  // }, []);
+  useEffect(() => {
+    const innerSize = () => setWindowSize(window.innerHeight);
+    window.addEventListener("resize", innerSize);
+    return () => window.removeEventListener("resize", innerSize);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
