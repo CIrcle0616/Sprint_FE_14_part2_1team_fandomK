@@ -27,6 +27,7 @@ export default function ListPage() {
   const [credit, setCredit] = useCredit();
   const [donations, setDonations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [chartGender, setChartGender] = useState("female"); //투표하기 모달의 리스트 변경을 위해 받는 성별
 
   useEffect(() => {
     setCredit(credit || 0);
@@ -67,7 +68,11 @@ export default function ListPage() {
   return (
     <>
       <ChargeModal isOpenP={isChargeModalOpen} onClose={closeChargeModal} />
-      <VoteModal isOpenP={isVoteModalOpen} onClose={closeVoteModal} />
+      <VoteModal
+        isOpenP={isVoteModalOpen}
+        onClose={closeVoteModal}
+        chartGender={chartGender}
+      />
       <DonationModal
         isOpenP={isDonationModalOpen}
         onClose={closeDonationModal}
@@ -83,7 +88,11 @@ export default function ListPage() {
           isDonationModalOpen={isDonationModalOpen}
           openDonationModal={handleOpenDonationModal}
         />
-        <IdolCharts openVoteModal={openVoteModal} />
+        <IdolCharts
+          openVoteModal={openVoteModal}
+          chartGender={chartGender}
+          setChartGender={setChartGender}
+        />
       </Wrap>
     </>
   );

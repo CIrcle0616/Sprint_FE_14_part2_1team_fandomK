@@ -58,17 +58,28 @@ const ModalCloseBtn = styled.img`
 const ModalBody = styled.div`
   display: flex;
   flex-direction: column;
-  justify-contents: center;
-  align-items: center;
   gap: 8px;
   margin-top: 24px;
+
+  &.alert {
+    gap: 0;
+    margin-top: 0;
+    align-items: center;
+  }
 `;
 
 // 공통된 모달을 만들어서 사용할 수 있도록 구현
 // 모달이 열려있는지 여부를 isOpen으로 받아서 모달을 렌더링할지 말지 결정
 // 모달이 열려있을 때는 children을 렌더링해서 모달 내용을 보여주고,
 // x 버튼을 누르면 onClose 함수를 호출해서 모달을 닫도록 구현
-const Modal = ({ title, children, onClose, isOpen, className }) => {
+const Modal = ({
+  title,
+  children,
+  onClose,
+  isOpen,
+  className,
+  hideCloseBtn,
+}) => {
   const modalRef = useRef(null);
 
   // 모달이 영역 박을 클릭했을 때 모달을 닫도록 구현
@@ -91,9 +102,11 @@ const Modal = ({ title, children, onClose, isOpen, className }) => {
       <ModalContent ref={modalRef} className={className}>
         <ModalHeader>
           <ModalTitle>{title}</ModalTitle>
-          <ModalCloseBtn onClick={onClose} src={closeIcon} alt="닫기" />
+          {!hideCloseBtn && (
+            <ModalCloseBtn onClick={onClose} src={closeIcon} alt="닫기" />
+          )}
         </ModalHeader>
-        <ModalBody>{children}</ModalBody>
+        <ModalBody className={className}>{children}</ModalBody>
       </ModalContent>
     </ModalOverlay>
   );

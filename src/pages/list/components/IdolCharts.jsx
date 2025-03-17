@@ -38,7 +38,11 @@ const ChartWrapper = styled.div`
   }
 `;
 
-export default function IdolCharts({ openVoteModal }) {
+export default function IdolCharts({
+  openVoteModal,
+  chartGender,
+  setChartGender,
+}) {
   return (
     <ChartWrapper>
       <div className="header">
@@ -48,7 +52,8 @@ export default function IdolCharts({ openVoteModal }) {
           차트 투표하기
         </button>
       </div>
-      <ChartTable />
+      {/* //성별 탭 변경 시 투표하기 모달의 리스트 변경 */}
+      <ChartTable setChartGender={setChartGender} />
     </ChartWrapper>
   );
 }
