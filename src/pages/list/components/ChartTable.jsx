@@ -40,6 +40,7 @@ const OrderedList = styled.ol`
   ${media.desktop`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    column-gap: 24px;
     `}
 `;
 
@@ -47,7 +48,7 @@ const LoadMoreIdolBtn = styled.button`
   display: block;
   max-width: 326px;
   max-height: 42px;
-  margin: 0 auto;
+  margin: 40px auto;
   padding: 8px 143px;
   border: 1px solid #f1eef9cc;
   border-radius: 3px;
@@ -64,30 +65,43 @@ export default function ChartTable({ setChartGender }) {
   const [idols, setIdols] = useState([]);
   const [selectedGender, setSelectedGender] = useState("female");
   const [currentCursor, setCurrentCursor] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(
+    window.matchMedia("(min-width: 1440px)").matches
+  );
+  const pageSize = isDesktop ? 10 : 5;
 
   const handleGenderClick = (gender) => {
     setSelectedGender(gender);
     setChartGender(gender); //성별 탭 변경 시 투표하기 모달의 리스트 변경
   };
+  // 데스크톱을 감지해서 IDOL호출 갯수 조절
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1440px)");
+    const handleResize = (e) => setIsDesktop(e.matches);
+    mediaQuery.addEventListener("change", handleResize);
+    return () => {
+      mediaQuery.removeEventListener("change", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const getChartListData = async () => {
       const { idols, nextCursor } = await fetchChartDataByGender(
         selectedGender,
-        {}
+        { pageSize }
       );
       setIdols(idols);
       setCurrentCursor(nextCursor);
       return;
     };
-
     getChartListData();
-  }, [selectedGender]);
+  }, [selectedGender, pageSize]);
 
   const handleLoadMoreClick = async () => {
     const { idols: loadedIdol, nextCursor } = await fetchChartDataByGender(
       selectedGender,
-      { cursor: currentCursor, pageSize: 10 }
+      { cursor: currentCursor, pageSize }
     );
     console.log(loadedIdol, nextCursor);
     setIdols((prevIdol) => [...prevIdol, ...loadedIdol]);
