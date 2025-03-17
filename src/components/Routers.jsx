@@ -10,8 +10,7 @@ export default function Routers() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/landing" element={<LandingPage />} />
+        <Route path="/" element={<LandingPage />} />
         <Route element={<HeaderLayout />}>
           <Route path="/list" element={<ListPage />} />
           <Route path="/mypage" element={<MyPage />} />
