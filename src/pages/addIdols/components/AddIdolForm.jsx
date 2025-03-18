@@ -82,6 +82,7 @@ const FormImg = styled.img`
   background-color: ${({ theme }) => theme.colors.grayColor4};
   opacity: 0.7;
   border-radius: 50%;
+  object-fit: cover;
 
   ${media.desktop`
     width: 143px;
