@@ -9,10 +9,7 @@ const AddIdolContainer = styled.div`
 `;
 
 const AddIdolHeader = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-  gap: 10px;
+  width: max-content;
   div {
     color: #fff;
     font-size: 20px;
@@ -20,14 +17,20 @@ const AddIdolHeader = styled.div`
   }
 `;
 
+const BackLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
 export default function AddIdol() {
   return (
     <AddIdolContainer>
       <AddIdolHeader>
-        <Link to="/mypage">
+        <BackLink to="/mypage" style={{ textDecoration: "none" }}>
           <img src={backIcon} />
-        </Link>
-        <div>뒤로가기</div>
+          <div>뒤로가기</div>
+        </BackLink>
       </AddIdolHeader>
       <AddIdolForm />
     </AddIdolContainer>
