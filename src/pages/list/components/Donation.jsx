@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 import creditImg from "../../../assets/icon/ic_credit.png";
 import donationImgCover from "../../../assets/images/cover_donation.svg";
 import media from "../../../utils/mediaHelper";
+import { useMemo, useState } from "react";
 
 const DonationCard = styled.div`
   max-width: 282px;
@@ -119,9 +120,18 @@ const ProgressBar = styled.div`
 `;
 
 export default function Donation({ donation, openDonationModal }) {
-  const { title, subtitle, targetDonation, receivedDonations, idol } = donation;
+  const { title, subtitle, targetDonation, receivedDonations, idol, deadline } =
+    donation;
   const fundingProgressPercent =
     (receivedDonations / targetDonation).toFixed(2) * 100;
+
+const daysRemaining = useMemo(() => {
+    const currentDate = new Date(); // 현재 날짜
+    const deadlineDate = new Date(deadline); // deadline을 Date 객체로 변환
+    const timeDifferenceMs = deadlineDate - currentDate; // 밀리초 차이
+    const millisecondsInADay = 24 * 60 * 60 * 1000; // 하루의 밀리초
+    return Math.floor(timeDifferenceMs / millisecondsInADay); // 남은 일수
+  }, [deadline]); // deadline이 변경될 때만 재계산
 
   return (
     <DonationCard>
@@ -141,7 +151,7 @@ export default function Donation({ donation, openDonationModal }) {
             <img src={creditImg} alt="credit" />
             <span>{receivedDonations || "0"}</span>
           </CreditCount>
-          <TextSpan>5일 남음</TextSpan>
+          <TextSpan>{`${daysRemaining}일 남음`}</TextSpan>
         </ProgressBarWrap>
         <ProgressBar fundingProgressPercent={fundingProgressPercent}>
           <div></div>
