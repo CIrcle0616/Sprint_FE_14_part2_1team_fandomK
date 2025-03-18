@@ -1,9 +1,5 @@
 const BASE_URL = "https://fandom-k-api.vercel.app/14-1"; //HTTP 요청을 보내는 기본 URL입니다
-const defaultGetOption = {
-  cursor: "",
-  pageSize: 50,
-  priorityIdolIds: [],
-};
+
 
 // export const fetchGetDonations = async (options = defaultGetOption) => {
 //   const { cursor, pageSize, priorityIdolIds } = options;
@@ -140,12 +136,11 @@ export const fetchGetDonations = async (
 ) => {
   const { cursor, pageSize, priorityIdolIds } = options;
   const params = new URLSearchParams();
-  console.log(priorityIdolIds)
   if (cursor) params.append("cursor", cursor);
   if (pageSize) params.append("pageSize", pageSize);
   if (priorityIdolIds) {
     const arrayPriorityIdols = JSON.parse(priorityIdolIds)
-    arrayPriorityIdols.forEach((priorityIdolId) =>
+    arrayPriorityIdols.slice(0,5).forEach((priorityIdolId) =>
       params.append("priorityIdolIds", priorityIdolId)
     );
   }
