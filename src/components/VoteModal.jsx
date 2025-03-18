@@ -11,11 +11,13 @@ import checkedRadioIcon from "../assets/icon/ic_radio_checked.png";
 import radioIcon from "../assets/icon/ic_radio.png";
 import useCredit from "../hooks/useCredit";
 import { Button } from "./ModalButton";
+import scrollIcon from "../assets/icon/ic_back.png";
 
 const VoteDiv = styled.div`
   background: #181d26;
   overflow-y: auto;
   max-height: 480px;
+  position: relative;
 
   &::-webkit-scrollbar {
     display: none;
@@ -98,6 +100,26 @@ const NotSelectModal = styled(Modal)`
   }
 `;
 
+const ScrollIcon = styled.img`
+  position: fixed;
+  width: 23px;
+  height: 23px;
+  bottom: 21%;
+  right: 50%;
+  background-color: #67666e;
+  border-radius: 50%;
+  padding: 5px;
+  opacity: 0.9;
+  -webkit-transform: translateX(50%) rotate(270deg);
+  transform: translateX(50%) rotate(270deg);
+  display: ${({ $isVisible }) => ($isVisible ? "block" : "none")};
+  transition: bottom 0.1s ease;
+
+  @media (max-width: 768px) {
+    bottom: 14%;
+  }
+`;
+
 const VoteModal = ({ isOpenP, onClose, chartGender }) => {
   const [idolList, setIdolList] = useState([]);
   const [cursor, setCursor] = useState(null);
@@ -108,6 +130,8 @@ const VoteModal = ({ isOpenP, onClose, chartGender }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [notSelectedIdol, setNotSelectedIdol] = useState(false);
   const [isChargeModalOpen, setIsChargeModalOpen] = useState(false);
+  const [showScrollIcon, setShowScrollIcon] = useState(false);
+  const voteDivRef = useRef(null);
 
   const fetchIdolList = async (reset = false) => {
     // 모달을 처음 열때 cursor를 초기화 하기 위해 reset 파라미터 추가 -> 모달 열때마다 새로운 리스트 불러오는거 방지
@@ -184,6 +208,9 @@ const VoteModal = ({ isOpenP, onClose, chartGender }) => {
 
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
+
+    const bottom = scrollHeight - scrollTop <= clientHeight * 1.5;
+    setShowScrollIcon(bottom);
     if (scrollHeight - scrollTop <= clientHeight * 1.5 && cursor) {
       fetchIdolList(false);
     }
@@ -199,7 +226,7 @@ const VoteModal = ({ isOpenP, onClose, chartGender }) => {
         }
         className="full-screen"
       >
-        <VoteDiv onScroll={handleScroll} $height={windowSize}>
+        <VoteDiv ref={voteDivRef} onScroll={handleScroll} $height={windowSize}>
           {idolList.map((idol, idx) => (
             <React.Fragment key={`${idol.id}_${idx}`}>
               <VoteList onClick={() => setSelectIdol(idol.id)}>
@@ -216,7 +243,12 @@ const VoteModal = ({ isOpenP, onClose, chartGender }) => {
               <VoteListHr />
             </React.Fragment>
           ))}
+          <ScrollIcon
+            src={scrollIcon}
+            $isVisible={!showScrollIcon}
+          ></ScrollIcon>
         </VoteDiv>
+
         <ModalVoteButton onClick={handleVoteButton}>투표하기</ModalVoteButton>
         <VoteDisDiv>
           투표하는데 <span>1000 크레딧</span>이 소모됩니다.

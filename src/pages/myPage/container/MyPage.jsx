@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState , useEffect} from 'react';
+import { fetchGetIdols } from "../../../utils/idolApi";
 import styled from "styled-components";
 import media from "../../../utils/mediaHelper";
 import MyPickIdol from "../components/MyPickIdol";
@@ -35,17 +36,23 @@ const InnerContainer = styled.div`
   `}
 `;
 const FloatingButton = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 10.6rem;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  background-color: #02000e;
-`;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  width:100%;
+  height:10.6rem;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  background-color:#02000E;
+  ${media.tablet`
+    position:static;
+    height:auto;
+    margin-top:5rem;
+
+  `}
+`
 
 const AddButton = styled.button`
   display: block;
@@ -79,30 +86,31 @@ const TitleContainer = styled.div`
 
 export default function MyPage() {
   // 체크한 아이돌은 부모에서 상태관리
-  const [mockIdols, setMockIdols] = useState([]);
+  const [idolList, setIdolList] = useState([]);
+  const [cursor, setCursor] = useState(null);
   const [checkedIdols, setCheckedIdols] = useState([]);
   const [finalSelectedIdols, setFinalSelectedIdols] = useState([]);
+  const [hiddenIdols, setHiddenIdols] = useState([]);
+
+
+  const fetchIdolList = async () => {
+    const { list, nextCursor } = await fetchGetIdols({
+      pageSize: 50,
+      cursor,
+    });
+    setCursor(nextCursor);
+    setIdolList((prevList) => [...prevList, ...list]);
+  };
 
   useEffect(() => {
-    const fetchMockIdol = async () => {
-      try {
-        const response = await fetch(
-          "https://fandom-k-api.vercel.app/14-1/idols?pageSize=10"
-        );
-        if (!response.ok) throw new Error("데이터 로드 실패");
-
-        const data = await response.json();
-        setMockIdols(data.list);
-      } catch (error) {
-        console.error("아이돌 데이터 로드 오류:", error);
-        setError("아이돌 데이터를 불러오는 데 실패했습니다.");
-      } finally {
-        //setIsLoading(false); // 로딩 종료
-      }
-    };
-
-    fetchMockIdol();
+    setCursor(null);
   }, []);
+
+  useEffect(() => {
+    if (cursor === null) {
+      fetchIdolList();
+    }
+  }, [cursor]);
 
   //아이돌 선택/해제 함수
   const toggleIdolSelection = (idolId) => {
@@ -116,18 +124,22 @@ export default function MyPage() {
   //추가하기 버튼 클릭 시 동작
   const handleAddIdols = () => {
     setFinalSelectedIdols(checkedIdols);
-    localStorage.setItem("checkedIdols", JSON.stringify(checkedIdols));
-  };
+    setHiddenIdols((prev) => [...prev, ...checkedIdols]);
+    localStorage.setItem('checkedIdols', JSON.stringify(checkedIdols))
+    setCheckedIdols([]);
+  }
 
   //checkedIdols 은 객체에 바로 반영되도록 useEffect 사용
   useEffect(() => {
     //로컬 스토리지에서 데이터 불러오기
-    const savedCheckedIdols =
-      JSON.parse(localStorage.getItem("checkedIdols")) || [];
+    const savedCheckedIdols = JSON.parse(localStorage.getItem("checkedIdols")) || [];
+    const savedSavedIdols = JSON.parse(localStorage.getItem("checkedIdols")) || [];
     if (savedCheckedIdols.length > 0) {
-      setCheckedIdols(savedCheckedIdols);
-      setFinalSelectedIdols(savedCheckedIdols);
-    }
+      setCheckedIdols(savedCheckedIdols)
+      setFinalSelectedIdols(savedCheckedIdols)
+  }
+  setHiddenIdols(savedSavedIdols);
+
   }, []);
 
   //아이돌 선택 해제 함수
@@ -139,36 +151,33 @@ export default function MyPage() {
     // 해당 형태로 사용하면, checkedIdols 값이 변경이 되었을 때, 변경 후의 값을 받아오지 못함.
     // setCheckedIdols((prev) => prev.filter((id) => id !== idolId));
     // setFinalSelectedIdols(checkedIdols);
+    setHiddenIdols((prev) => prev.filter((id) => id !== idolId));
   };
 
   return (
-    <>
-      <InnerContainer>
-        <Title>관심 있는 아이돌을 추가해보세요.</Title>
-        <MyPickIdol
-          idols={mockIdols}
-          selectedIdols={finalSelectedIdols}
-          removeIdols={handleRemoveIdol}
-        />
-        <TitleContainer>
-          <Title>내가 관심있는 아이돌</Title>
-          <AddIdolLink>
-            <Link to="/addIdol">찾으시는 아이돌이 없으신가요?</Link>
-          </AddIdolLink>
-        </TitleContainer>
+    <InnerContainer>
+      <Title>관심 있는 아이돌을 추가해보세요.</Title>
+      <MyPickIdol
+        idols={idolList}
+        selectedIdols={finalSelectedIdols}
+        removeIdols={handleRemoveIdol}
+      />
 
-        <MyPageIdolList
-          idols={mockIdols} // 전체 아이돌 리스트
-          checkedIdols={checkedIdols} // 체크한 아이돌 모음
-          toggleIdolSelection={toggleIdolSelection} // 아이돌 클릭 기능
-        />
-        <FloatingButton>
-          <AddButton onClick={handleAddIdols}>
-            <img src={PlusImageIconSrc} alt="" />
-            <span>추가하기</span>
-          </AddButton>
-        </FloatingButton>
-      </InnerContainer>
-    </>
+      <Title>내가 관심있는 아이돌</Title>
+      <MyPageIdolList
+        idols={idolList} // 전체 아이돌 리스트
+        checkedIdols={checkedIdols} // 체크한 아이돌 모음
+        toggleIdolSelection={toggleIdolSelection} // 아이돌 클릭 기능
+        hiddenIdols={hiddenIdols}
+      />
+
+      <FloatingButton>
+        <AddButton onClick={handleAddIdols}>
+          <img src={PlusImageIconSrc} alt=""/>
+          <span>추가하기</span>
+        </AddButton>
+      </FloatingButton>
+    </InnerContainer>
+
   );
 }

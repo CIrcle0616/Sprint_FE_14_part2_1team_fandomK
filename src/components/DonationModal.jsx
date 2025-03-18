@@ -109,6 +109,25 @@ function DonationModal({ isOpenP, onClose, donation, loadingAmountOfDonate }) {
     setInputCredit(Number(e.target.value));
   };
 
+  // "-" "+" "." 키를 눌렀을 때 입력 방지 & enter를 눌렀을 때 후원보내기
+  const handleKeyDownMinus = async (e) => {
+    if (e.key === "-" || e.key === "+" || e.key === ".") {
+      e.preventDefault();
+    } else if (e.key === "Enter") {
+      if (!showWarning) {
+        setTotalCredit(totalCredit - inputCredit);
+        try {
+          onClose();
+          const data = await fetchPutDonationContribute(id, inputCredit);
+          const { receivedDonations } = data;
+          loadingAmountOfDonate(id, receivedDonations);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+  };
+
   // 인풋에 크레딧 입력시 실시간으로 크레딧 부족 경고를 받을 수 있게 변경
   useEffect(() => {
     setShowWarning(totalCredit < inputCredit);
@@ -162,9 +181,11 @@ function DonationModal({ isOpenP, onClose, donation, loadingAmountOfDonate }) {
             <DonationInput
               placeholder="크레딧 입력"
               type="number"
+              min="0"
               $totalCredit={parseInt(totalCredit)}
               $inputCredit={inputCredit}
               onChange={handleInputChange}
+              onKeyDown={handleKeyDownMinus}
             />
             <DonationImg src={creditIcon} />
           </DonationInputContainer>

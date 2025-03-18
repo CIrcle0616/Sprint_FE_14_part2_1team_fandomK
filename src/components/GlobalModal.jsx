@@ -25,6 +25,10 @@ const ModalContent = styled.div`
   background: #181d26;
   border-radius: 8px;
 
+&:focus {
+    outline: none;
+  }
+
   // 투표하기 모달의 모바일 환경에서 다른 디자인 적용
   &.full-screen {
     @media (max-width: 768px) {
@@ -53,6 +57,8 @@ const ModalTitle = styled.div`
 const ModalCloseBtn = styled.img`
   width: 24px;
   height: 24px;
+
+  cursor: ${(props) => (props.onClick ? "pointer" : "auto")};
 `;
 
 const ModalBody = styled.div`
@@ -82,7 +88,7 @@ const Modal = ({
 }) => {
   const modalRef = useRef(null);
 
-  // 모달이 영역 박을 클릭했을 때 모달을 닫도록 구현
+  // 모달이 영역 밖을 클릭했을 때 모달을 닫도록 구현
   useEffect(() => {
     if (!isOpen) return;
     const handleOutsideClick = (event) => {
@@ -95,11 +101,28 @@ const Modal = ({
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [isOpen, onClose]);
 
+  const handleKeydown = (e) => {
+    if (e.key === "Escape") {
+      onClose();
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      modalRef.current.focus(); // 모달이 열리면 포커스 이동
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
     <ModalOverlay>
-      <ModalContent ref={modalRef} className={className}>
+      <ModalContent
+        ref={modalRef}
+        className={className}
+        onKeyDown={handleKeydown}
+        tabIndex={0}
+      >
         <ModalHeader>
           <ModalTitle>{title}</ModalTitle>
           {!hideCloseBtn && (
