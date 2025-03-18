@@ -15,12 +15,12 @@ import ContainerTextSrc4 from '../assets/images/img_landing_text3.png';
 import PhoneImg1 from '../assets/images/img_phone1.png';
 import PhoneImg2 from '../assets/images/img_phone2.png';
 import PhoneImg3 from '../assets/images/img_phone3.png';
-import LandingLine from '../assets/images/img_landing_line.png';
 
 // easing 함수 정의
 const ease = 'cubic-bezier(0.25, 0.1, 0.25, 1.0)';
 
 const PageWrapper = styled.div`
+  min-width:270px;
   height: 400vh;
   background:#02000E;
 `;
