@@ -31,6 +31,10 @@ const IdolInfo = styled.div`
   div:first-child {
     font-size: ${({ theme }) => theme.fontSize.large};
   }
+
+  div:last-child {
+    font-size: ${({ theme }) => theme.fontSize.medium};
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -60,6 +64,7 @@ const ModalImg = styled.img`
   background-color: ${({ theme }) => theme.colors.grayColor4};
   opacity: 0.7;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 export default function AddIdolConfirmModal({
