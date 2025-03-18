@@ -150,6 +150,14 @@ export default function ChartTable({ setChartGender }) {
   useEffect(() => {
     const getChartListData = async () => {
       setLoading(true);
+      //
+      const minimumLoadingTime = new Promise((resolve) => {
+        setTimeout(() => resolve(), 200); // 200ms = 0.2초
+      });
+      const fetchDataPromise = fetchChartDataByGender(selectedGender, {
+        pageSize,
+      });
+      await Promise.all([fetchDataPromise, minimumLoadingTime]); //배열로 받은 Promise가 전부 resolve되기 전까지 반환하지 않는다.
       const { idols, nextCursor } = await fetchChartDataByGender(
         selectedGender,
         { pageSize }
@@ -164,15 +172,12 @@ export default function ChartTable({ setChartGender }) {
 
   const handleLoadMoreClick = async () => {
     if (currentCursor === null) return;
-    setLoading(true);
     const { idols: loadedIdol, nextCursor } = await fetchChartDataByGender(
       selectedGender,
       { cursor: currentCursor, pageSize }
     );
-    console.log(loadedIdol, nextCursor);
     setIdols((prevIdol) => [...prevIdol, ...loadedIdol]);
     setCurrentCursor(nextCursor);
-    setLoading(false);
   };
 
   const renderSkeleton = () =>
