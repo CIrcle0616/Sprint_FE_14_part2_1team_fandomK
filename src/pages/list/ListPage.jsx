@@ -28,6 +28,7 @@ export default function ListPage() {
   const [donations, setDonations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [chartGender, setChartGender] = useState("female"); //투표하기 모달의 리스트 변경을 위해 받는 성별
+  const checkedIdol = localStorage.getItem("checkedIdols");
 
   useEffect(() => {
     setCredit(credit || 0);
@@ -35,7 +36,8 @@ export default function ListPage() {
 
   const getDonationListData = useCallback(async () => {
     setIsLoading(true);
-    const { list } = await fetchGetDonations();
+    const options = {cursor: '', pageSize: 20, priorityIdolIds: checkedIdol };
+    const { list } = await fetchGetDonations(options);
     setDonations(list);
     setIsLoading(false);
     return;
