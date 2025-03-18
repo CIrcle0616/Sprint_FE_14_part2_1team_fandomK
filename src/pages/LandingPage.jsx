@@ -24,7 +24,7 @@ const PageWrapper = styled.div`
 `;
 
 const SectionWrapper = styled.section`
-
+  height:100vh
 `;
 
 const Section = styled.article`
@@ -140,17 +140,17 @@ const LandingPage = () => {
     const progress = scrollPos / window.innerHeight;
 
     if (imageMask1 && image1 && image2 && image3) {
-      if (progress < 0.8) {//80% 지점에서 트랜지션
+      if (progress < 0.3) {//80% 지점에서 트랜지션
         imageMask1.style.opacity = 1;
         image1.style.opacity = 0;
         image2.style.opacity = 0;
         image3.style.opacity = 0;
-      } else if (progress < 1.6) {
+      } else if (progress < 1) {
         imageMask1.style.opacity = 0;
         image1.style.opacity = 1;
         image2.style.opacity = 0;
         image3.style.opacity = 0;
-      } else if (progress < 2.4 ) {
+      } else if (progress < 2 ) {
         imageMask1.style.opacity = 0;
         image1.style.opacity = 0;
         image2.style.opacity = 1;

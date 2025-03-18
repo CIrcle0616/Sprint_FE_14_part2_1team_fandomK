@@ -21,14 +21,14 @@ const PickedList  = styled.ul`
 
   `}
   ${media.desktop`
-    min-height:19.5rem;
+    min-height:19rem;
   `}
 
   li {
     position:relative;
   }
 
-  button:nth-child(2) {
+  button.thumbnail {
     margin-bottom:0.8rem;
     width:7rem;
     height:7rem;
@@ -38,7 +38,7 @@ const PickedList  = styled.ul`
     `}
 
   }
-  img {
+  button.thumbnail img {
     padding:7.5%;
     width:100%;
     height:100%;
@@ -53,6 +53,13 @@ const ProfileInfo = styled.div`
   text-align:center;
   color:#fff;
 
+  strong {
+    ${media.desktop`
+      line-height:2.6rem;
+
+
+    `}
+  }
   span {
     line-height:1.7rem;
     font-size:1.4rem;
@@ -60,6 +67,10 @@ const ProfileInfo = styled.div`
 
   ${media.tablet`
     line-height:2.8rem;
+
+  `}
+  ${media.desktop`
+    line-height:1.7rem;
 
   `}
   }
@@ -96,7 +107,7 @@ export default function SelectedIdol ({ idols, selectedIdols, removeIdols }) {
           <RemoveButton type="button" onClick={() => removeIdols(idol.id)}>
             <img src={ImageIdolRemove} alt="아이돌 삭제하기"/>
           </RemoveButton>
-          <button type="button">
+          <button type="button" className="thumbnail">
             <IdolCircle idol={idol} />
           </button>
           <ProfileInfo>

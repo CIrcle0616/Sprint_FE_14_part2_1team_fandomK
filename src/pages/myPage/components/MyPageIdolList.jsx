@@ -1,9 +1,14 @@
+import { useState } from 'react';
 import styled from "styled-components";
 import media from "../../../utils/mediaHelper";
 import IdolCircle from "../../../components/IdolCircle";
 import CheckImageMark from "/src/assets/images/img_checkmark.png";
 
 //아이돌 리스트
+const SlideWrapper = styled.div`
+  position:relative;
+
+`
 const TotalIdolList = styled.ul`
   margin-top:1.6rem;
   margin-bottom:4rem;
@@ -11,19 +16,18 @@ const TotalIdolList = styled.ul`
   gap:1.7rem 2.4rem;
   flex-wrap:wrap;
   ${media.tablet`
-     margin-top:5.7rem;
+    margin-top:5.7rem;
       gap:2.4rem;
-
   `}
   ${media.desktop`
-     margin-top:3.2rem;
+    margin-top:3.2rem;
     margin-bottom:4.8rem;
     gap:2.2rem 3.1rem;
   `}
-
 `
 
 const IdolItem = styled.li`
+  ${({ isvisible }) => !isvisible && `display: none;`}
 
   button {
     position:relative;
@@ -101,31 +105,56 @@ const ProfileInfo = styled.div`
   }
 `;
 
+const ArrowButton = styled.div`
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:10;
+  width:30px;
+  height:135px;
+  background: #1B1B1BCC;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:4px;
 
-
-export default function SelectedIdol({ idols = [], checkedIdols, toggleIdolSelection }) {
-
+  &.left {
+    left:-40px;
+  }
+  &.right {
+    right:-40px;
+  }
+  img {
+    width:6px;
+    height:12px;
+  }
+`
+export default function SelectedIdol({ idols = [], checkedIdols, toggleIdolSelection, hiddenIdols}) {
   return (
-    <TotalIdolList>
-      {idols.map((idol) => (
-        <IdolItem
-          key={idol.id}
-        >
-            <button
-              type="button"
-              data-id={idol.id}
-              onClick={() => toggleIdolSelection(idol.id)}
-            >
-            <IdolCircle idol={idol} />
-            {checkedIdols.includes(idol.id) ? <Layer><img src={CheckImageMark}/></Layer> : ''}
-          </button>
-          <ProfileInfo>
-            <strong>{idol.name}</strong>
-            <span>{idol.group}</span>
-          </ProfileInfo>
-        </IdolItem>
-      ))}
-    </TotalIdolList>
+    <SlideWrapper>
+      <TotalIdolList>
+        {idols.map((idol) => (
+          <IdolItem
+            key={idol.id}
+            isvisible={!hiddenIdols.includes(idol.id)}
+          >
+              <button
+                type="button"
+                data-id={idol.id}
+                onClick={() => toggleIdolSelection(idol.id)}
+              >
+              <IdolCircle idol={idol} />
+              {checkedIdols.includes(idol.id) ? <Layer><img src={CheckImageMark}/></Layer> : ''}
+            </button>
+            <ProfileInfo>
+              <strong>{idol.name}</strong>
+              <span>{idol.group}</span>
+            </ProfileInfo>
+          </IdolItem>
+        ))}
+      </TotalIdolList>
+
+    </SlideWrapper>
   );
 }
 
