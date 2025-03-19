@@ -110,13 +110,32 @@ const ScrollIcon = styled.img`
   border-radius: 50%;
   padding: 5px;
   opacity: 0.9;
-  -webkit-transform: translateX(50%) rotate(270deg);
-  transform: translateX(50%) rotate(270deg);
   display: ${({ $isVisible }) => ($isVisible ? "block" : "none")};
-  transition: bottom 0.1s ease;
+  animation: down 1.5s infinite;
+  -webkit-animation: down 1.5s infinite;
 
-  @media (max-width: 768px) {
-    bottom: 14%;
+  @keyframes down {
+    0% {
+      transform: translateX(50%) rotate(270deg) translateY(0);
+    }
+    50% {
+      transform: rotate(270deg) translateY(20%);
+    }
+    100% {
+      transform: translateX(50%) rotate(270deg) translateY(0);
+    }
+  }
+
+  @-webkit-keyframes down {
+    0% {
+      transform: translateX(50%) rotate(270deg) translateY(0);
+    }
+    50% {
+      transform: rotate(270deg) translateY(20%);
+    }
+    100% {
+      transform: translateX(50%) rotate(270deg) translateY(0);
+    }
   }
 `;
 
