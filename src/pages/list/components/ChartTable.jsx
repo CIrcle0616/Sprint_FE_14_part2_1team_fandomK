@@ -12,6 +12,7 @@ import {
   SkeletonRank,
   SkeletonText,
 } from "../styles/ChartTableStyles";
+import { useResponsive } from "../../../hooks/useResponsive";
 
 // 스켈레톤 컴포넌트
 const IdolHorizontalSkeleton = () => (
@@ -34,9 +35,7 @@ export default function ChartTable({ setChartGender }) {
   const [selectedGender, setSelectedGender] = useState("female");
   const [currentCursor, setCurrentCursor] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [isDesktop, setIsDesktop] = useState(
-    window.matchMedia("(min-width: 1440px)").matches
-  );
+  const { isDesktop } = useResponsive();
 
   const pageSize = isDesktop ? 10 : 5;
 
@@ -44,17 +43,8 @@ export default function ChartTable({ setChartGender }) {
     setSelectedGender(gender);
     setChartGender(gender); //성별 탭 변경 시 투표하기 모달의 리스트 변경
   };
+
   // 데스크톱을 감지해서 IDOL호출 갯수 조절
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 1440px)");
-    const handleResize = (e) => setIsDesktop(e.matches);
-    mediaQuery.addEventListener("change", handleResize);
-    return () => {
-      mediaQuery.removeEventListener("change", handleResize);
-    };
-  }, []);
-
   useEffect(() => {
     const getChartListData = async () => {
       setLoading(true);
