@@ -1,104 +1,53 @@
-import { useEffect, useState } from "react";
-import Donation from "../components/Donation";
-import leftBtnImg from "../../../assets/icon/btn_pagination_arrow_left.svg";
-import rightBtnImg from "../../../assets/icon/btn_pagination_arrow_right.svg";
-import DonationSkeleton from "../components/DonationSkeleton";
-import {
-  DonationFlexListWrap,
-  DonationFlexList,
-  DonationLi,
-  RightDiv,
-  PaginationButton,
-} from "../styles/DonationListStyles";
+// DonationList.jsx
+import React, { useState, useCallback, useMemo } from "react";
+import DonationListContent from "../components/DonationListContent";
+import DonationListSkeleton from "../components/DonationListSkeleton";
+import { useResponsive } from "../../../hooks/useResponsive";
+import { ITEMS_PER_PAGE } from "../constants/donationConstants";
+import { RightDiv } from "../styles/DonationListStyles";
 
-const ITEMS_PER_PAGE = 4;
-
-const PaginationArrow = ({ direction, onClick, src }) => (
-  <PaginationButton direction={direction} onClick={onClick}>
-    <img src={src} alt={`${direction} arrow`} />
-  </PaginationButton>
-);
-
-export default function DonationList({
-  donations,
-  isLoading,
-  openDonationModal,
-}) {
-  const [isDesktop, setIsDesktop] = useState(
-    window.matchMedia("(min-width: 1440px)").matches
-  );
+const DonationList = ({ donations = [], isLoading = false, openDonationModal }) => {
+  const { isDesktop } = useResponsive();
   const [startIndex, setStartIndex] = useState(0);
-  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 1440px)");
-    const handleResize = (e) => setIsDesktop(e.matches);
-
-    mediaQuery.addEventListener("change", handleResize);
-    return () => {
-      mediaQuery.removeEventListener("change", handleResize);
-    };
-  }, []);
-
-  const handlePagination = (direction) => {
+  const handlePagination = useCallback((direction) => {
     if (direction === "left" && startIndex - ITEMS_PER_PAGE >= 0) {
-      setStartIndex((prev) => prev - ITEMS_PER_PAGE);
+      setStartIndex(prev => prev - ITEMS_PER_PAGE);
     } else if (
       direction === "right" &&
       startIndex + ITEMS_PER_PAGE < donations.length
     ) {
-      setStartIndex((prev) => prev + ITEMS_PER_PAGE);
+      setStartIndex(prev => prev + ITEMS_PER_PAGE);
     }
-  };
+  }, [startIndex, donations.length]);
 
-  const visibleDonations = isDesktop
-    ? donations.slice(startIndex, startIndex + ITEMS_PER_PAGE)
-    : donations;
-
-  const renderSkeleton = () => (
-    <>
-      {!isDesktop && <RightDiv />}
-      {Array.from({ length: ITEMS_PER_PAGE }).map((_, index) => (
-        <DonationLi key={index}>
-          <DonationSkeleton />
-        </DonationLi>
-      ))}
-      {!isDesktop && <RightDiv />}
-    </>
-  );
-
-  const renderContent = () => (
-    <>
-      {isDesktop && startIndex > 0 && (
-        <PaginationArrow
-          direction="left"
-          onClick={() => handlePagination("left")}
-          src={leftBtnImg}
-        />
-      )}
-      {!isDesktop && <RightDiv />}
-      {visibleDonations.map((donation) => (
-        <DonationLi key={donation.id}>
-          <Donation donation={donation} openDonationModal={openDonationModal} />
-        </DonationLi>
-      ))}
-      {isDesktop && startIndex + ITEMS_PER_PAGE < donations.length && (
-        <PaginationArrow
-          direction="right"
-          onClick={() => handlePagination("right")}
-          src={rightBtnImg}
-        />
-      )}
-      {!isDesktop && <RightDiv />}
-    </>
-  );
+  const visibleDonations = useMemo(() => 
+    isDesktop
+      ? donations.slice(startIndex, startIndex + ITEMS_PER_PAGE)
+      : donations
+  , [isDesktop, donations, startIndex]);
 
   return (
-    <DonationFlexListWrap>
-      <h1>후원을 기다리는 조공</h1>
-      <DonationFlexList>
-        {isLoading ? renderSkeleton() : renderContent()}
-      </DonationFlexList>
-    </DonationFlexListWrap>
+    <div>
+      <RightDiv>후원을 기다리는 조공</RightDiv>
+      {isLoading ? (
+        <DonationListSkeleton 
+          isDesktop={isDesktop} 
+          itemsPerPage={ITEMS_PER_PAGE} 
+        />
+      ) : (
+        <DonationListContent 
+          isDesktop={isDesktop}
+          startIndex={startIndex}
+          donations={donations}
+          visibleDonations={visibleDonations}
+          handlePagination={handlePagination}
+          openDonationModal={openDonationModal}
+          itemsPerPage={ITEMS_PER_PAGE}
+        />
+      )}
+    </div>
   );
-}
+};
+
+export default React.memo(DonationList);
