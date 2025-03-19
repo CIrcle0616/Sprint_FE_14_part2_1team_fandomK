@@ -29,7 +29,6 @@ const DonationList = ({ donations = [], isLoading = false, openDonationModal }) 
 
   return (
     <div>
-      <RightDiv>후원을 기다리는 조공</RightDiv>
       {isLoading ? (
         <DonationListSkeleton 
           isDesktop={isDesktop} 
