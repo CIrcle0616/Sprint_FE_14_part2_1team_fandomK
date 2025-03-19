@@ -126,7 +126,7 @@ export default function MyPage() {
     setFinalSelectedIdols(checkedIdols);
     setHiddenIdols((prev) => [...prev, ...checkedIdols]);
     localStorage.setItem('checkedIdols', JSON.stringify(checkedIdols))
-    setCheckedIdols([]);
+
   }
 
   //checkedIdols 은 객체에 바로 반영되도록 useEffect 사용

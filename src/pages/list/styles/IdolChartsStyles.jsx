@@ -1,6 +1,8 @@
 import styled from "styled-components";
+import media from "../../../utils/mediaHelper";
 
 export const ChartWrapper = styled.div`
+  position: relative;
   margin-top: 40px;
   padding: 0 24px;
   color: #ffffff;
@@ -33,5 +35,13 @@ export const ChartWrapper = styled.div`
   & .header img {
     width: 24px;
     height: 24px;
+  }
+  & .link {
+    position: absolute;
+    left: 25%;
+    ${media.tablet`
+      left:auto;
+      right: 25%;
+      `};
   }
 `;
