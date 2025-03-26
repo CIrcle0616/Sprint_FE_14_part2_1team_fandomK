@@ -1,12 +1,126 @@
-# React + Vite
+# FandomK 프로젝트 회고 문서
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 1. 프로젝트 개요
 
-Currently, two official plugins are available:
+### 주제 설명
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+이 프로젝트는 사용자들이 내가 좋아하는 아이돌에게 투표를 하고 후원을 할 수 있는 플랫폼입니다 
+다양한 기능을 통해 사용자 경험을 개선하고, 실무에 가까운 개발 경험을 쌓는 것을 목표로 했습니다.
 
-## Expanding the ESLint configuration
+### 팀원 소개 및 역할 분담
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **박원현**: 목록 페이지, API 함수 작성
+- **나예진**: 모달창 구현, 아이돌 추가 페이지
+- **전수영**: 랜딩페이지, 마이페이지
+- **멘토**: 김정현 멘토님 (문제 해결을 위한 단서 제공 및 사고 확장에 도움)
+
+---
+
+## 2. 기획 단계
+
+### 컨벤션
+
+- **브랜치 전략**: 기능/작업 유형 기반 방식 사용
+    - 형식: `<type>/<short-description>`
+    - 예시: `feature/add-idol-card`, `fix/idol-info-alignment`
+- **커밋 메시지**: Conventional Commits 규칙 채택
+    - 형식: `<type>(<scope>): <description>`
+    - 예시: `feat(vote): add vote system`, `fix(modal): resolve credit sync issue`
+- 코딩 컨벤션
+    - prettier
+    - spell checker
+    - 카멜케이스
+- 요구사항 정리
+    - 기본 요구사항을 정리한 뒤 브레인스토밍을 통해서 추가 요구사항을 정리하고 멘토님께 컨펌받음
+    - 사용자 입장에서 사용성을 고려해서 추가 요구사항을 정리 → userflow
+    - 기타 유사 앱을 사용한 경험을 토대로 적합성 판단 → 벤치마킹
+
+### 폴더 구조 정리
+
+```
+📂 src
+ ┣ 📂 assets    # 이미지, 아이콘 등 정적 자산 관리
+ ┣ 📂 components # 공통 UI 컴포넌트 관리
+ ┣ 📂 contexts   # 전역 상태 관리 (Context API)
+ ┣ 📂 hooks      # Custom Hook 모음
+ ┣ 📂 pages      # 각 기능별 페이지 컴포넌트 관리
+ ┃ ┣ 📂 addIdols
+ ┃ ┃ ┣ 📂 components  # addIdols 페이지의 전용 컴포넌트
+ ┃ ┃ ┣ 📂 container   # addIdols의 로직 및 상태 관리 컴포넌트
+ ┃ ┣ 📂 list
+ ┃ ┣ 📂 main
+ ┃ ┣ 📂 myPage
+ ┃ ┣ 📄 LandingPage.jsx  # 첫 진입 시 보이는 랜딩 페이지
+ ┣ 📂 styles     # 글로벌 및 컴포넌트별 스타일 관리
+ ┣ 📂 utils      # 공통 유틸리티 함수 모음
+ ┣ 📄 index.css  # 전역 스타일 파일
+ ┣ 📄 main.jsx   # React 진입점 (Entry Point)
+```
+
+### 깃 브랜치 및 커밋 전략 회고
+
+- **잘했던 점**: 작업 유형을 기준으로 한 브랜치 및 커밋 메시지의 명확성으로 협업에 유리했음
+    - 담당 파트에 대한 분배가 적절하게 이뤄진 부분: 명확하게 나누고 코드 충돌에 빈도를 나눌 수 있었음 → 요구사항 정리가 잘된 영향
+    - 깃허브 이슈를 작성해서 버그나 진행사항을 공유한 점 : 이슈를 빠르게 알수 있어서 좋았음
+    - 요구사항을 온전히 충족하고, 동작되기 까지 만족함
+    - 개발속도의 장점이 확실히 있었다고 생각함. 병목이 생길 수도 있는 부분을 빠르게 해결할 수 있었다고 생각함 → 공통 컴포넌트의 개발, 모달창의 개발을 우선해 후에 공통 컴포넌트를 사용하거나 페이지를 작성하는 사람이 바로 적용할 수 있도록 했던 점
+    - 컴포넌트와 폴더구조의 정리를 구조적으로 해서 다른 사람의 코드를 볼 때 보기 편했다고 생각함
+- **아쉬운 점**: 일부 커밋 메시지에 구체성이 부족했던 부분이 있었음 (ex. `fix(bug)` 등 범용적인 표현)
+    - PR을 통한 코드리뷰를 하지 않은 점 → 다른 이의 코드를 살펴보기 보단 본인의 코드 작성에 집중함 → 후반부까지 fetchMockIdol() 함수가 실행되어 콘솔에 error를 띄웠던 점 → API 작성된 함수의 사용을 늦게 전달했어서 도입이 느렸던 경우
+    - branch 명칭의 세세함이 아쉬웠음 → 각 기능 별로 branch를 나눴으면 좀 더 깃헙 관리가 깔끔했을 것 같음 → git push 를 통해 branch를 원격에 업로드 할지 안할지
+    - 크로스 체크에 대해 미흡함이 있었음 → 크로스체크를 통해 버그나 동작과정에 대한 테스트를 진행하지 않았던 점이 아쉽다.
+    - 이슈를 통한 개발이 아닌 개발 후 이슈발행 순서가 조금 아쉬웠습니다. 이슈란게 어떤 문제가 그 문제를 해결하기 위한 작성, PR을 통한 해결 순으로 진행되었어야 하지 않았나..
+    - 소통시간 조금 적었나? 팀미팅 소통과정이나 서로의 개발사항 공유가 원할하게 이뤄지진 않은 것 같습니다.
+
+---
+
+## 3. 작업 단계
+
+### 1. UI 분기 처리 문제
+
+- **문제 상황**: PC와 모바일/태블릿에서 서로 다른 UI 제공 필요
+- **해결 방법**: `useEffect`와 `window.matchMedia`를 이용해 화면 크기 감지 및 상태 관리
+
+### 2. API 요청 실패 및 로딩 경험 개선
+
+- **문제 상황**: API 요청 실패 시 사용자 경험 악화
+- **해결 방법**:
+    - `while`과 `try..catch`로 재시도 로직 구현
+    - 스켈레톤 UI 적용 및 최소 로딩 시간 도입
+
+### 3. 모달 간 크레딧 동기화 문제
+
+- **문제 상황**: `localStorage`를 통해 크레딧 값을 관리했으나, 모달 간 동기화 문제 발생
+- **해결 방법**: `customEvent`를 활용한 크레딧 상태 동기화
+
+### 4. 한글 파일명 업로드 문제
+
+- **문제 상황**: 한글 파일명 업로드 실패
+- **해결 방법**: `UUID`를 이용해 파일명을 고유하게 생성하도록 수정
+
+### 5. 아이돌 삭제 기능 버그
+
+- **문제 상황**: 선택한 아이돌 삭제 기능이 두 번 클릭해야 작동
+- **해결 방법**:
+    - `setFinalSelectedIdols`에 함수형 업데이트 패턴 도입
+    - `useEffect`에서 `checkedIdols` 값이 변경된 후 `removeIdol` 이벤트가 실행되도록 순서 조정
+
+---
+
+## 4. 회고
+
+### 잘한 점
+
+- 브랜치 및 커밋 전략을 정립해 작업 분류와 협업이 수월했음
+- 각자 맡은 업무에 대해서 성실히 수행함
+- 문제 상황을 인지하고 문제 해결 방법을 기록함
+
+### 아쉬운 점
+
+- 커밋 메시지에 구체적인 설명을 더 추가할 필요성 발견
+- PR 관리 및 코드 리뷰가 부족하여, 코드 품질 향상이 부족했던 점
+
+### 앞으로의 개선 방향
+
+- 클린 코드로 코드 관리 (상태 관리 최적화, 반복 코드 최소화, 가독성 향상)
+- 타입스크립트 도입을 통해서 유지보수성 강화하고, 새로운 기술 학습
